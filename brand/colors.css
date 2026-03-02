@@ -1,0 +1,13 @@
+/* Farhand SDK Brand Colors */
+:root {
+  --farhand-primary: #33ee69;    /* Bright green */
+  --farhand-dark: #10100d;       /* Near black */
+  --farhand-light: #ffffff;      /* White */
+
+  /* Aliases for common use cases */
+  --farhand-bg-dark: #10100d;
+  --farhand-bg-light: #ffffff;
+  --farhand-accent: #33ee69;
+  --farhand-text-on-dark: #ffffff;
+  --farhand-text-on-light: #10100d;
+}
