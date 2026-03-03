@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { readdirSync, existsSync, readFileSync } from "fs";
 import path from "path";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const outputsDir = path.join(process.cwd(), "outputs");
@@ -13,34 +15,37 @@ export async function GET() {
       .filter((d) => d.isDirectory())
       .sort((a, b) => b.name.localeCompare(a.name));
 
-    const versions = dirs.map((dir) => {
+    const files = dirs.map((dir) => {
       const dirPath = path.join(outputsDir, dir.name);
-      const files = readdirSync(dirPath);
-      let customerName = "Draft";
-      let template = "general";
+      const dirFiles = readdirSync(dirPath);
+      let name = "Draft";
 
       const metaPath = path.join(dirPath, "metadata.json");
       if (existsSync(metaPath)) {
         try {
           const meta = JSON.parse(readFileSync(metaPath, "utf-8"));
-          customerName = meta.customerName || "Draft";
-          template = meta.template || "general";
+          name = meta.customerName || meta.name || "Draft";
         } catch {}
       }
 
+      const datePart = dir.name.slice(0, 19);
+      const createdAt = datePart
+        .replace(/T/, " ")
+        .replace(/^(\d{4}-\d{2}-\d{2}) (.*)$/, (_, date, time) => `${date} ${time.replace(/-/g, ":")}`);
+
       return {
         id: dir.name,
-        createdAt: dir.name.slice(0, 19).replace(/T/, " ").replace(/-/g, ":"),
-        customerName,
-        template,
-        hasPDF: files.some((f) => f.endsWith(".pdf")),
-        hasHTML: files.some((f) => f.endsWith(".html")),
+        name,
+        createdAt,
+        hasPDF: dirFiles.some((f) => f.endsWith(".pdf")),
+        hasHTML: dirFiles.some((f) => f.endsWith(".html")),
+        htmlFile: dirFiles.find((f) => f.endsWith(".html")) || null,
       };
     });
 
-    return NextResponse.json(versions);
+    return NextResponse.json(files);
   } catch (error) {
-    console.error("List versions error:", error);
+    console.error("List files error:", error);
     return NextResponse.json([], { status: 500 });
   }
 }

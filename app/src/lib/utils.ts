@@ -14,6 +14,12 @@ export function escHtml(str: string): string {
     .replace(/'/g, "&#39;");
 }
 
+export function hexAlpha(hex: string, alpha: string): string {
+  let h = hex.replace(/^#/, "");
+  if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+  return `#${h}${alpha}`;
+}
+
 export function slugify(str: string): string {
   return str
     .toLowerCase()

@@ -1,78 +1,121 @@
 # OnePager
 
-Create beautiful, branded one-pager PDFs in minutes. No designer needed.
+Create beautiful, branded one-pager PDFs by describing what you want. Claude Code writes the HTML, you see it live, export when happy.
 
-Built for startups that need to produce personalized sales documents for each client without the overhead of Canva, Figma, or hiring a designer.
+## How It Works
 
-## What It Does
+1. **Start the app** — see a live preview in your browser
+2. **Tell Claude Code what you want** — "make a one-pager for Acme Corp about our robotics platform"
+3. **Claude writes the HTML** — preview updates automatically
+4. **Tweak text in the sidebar** — quick edits without re-prompting
+5. **Export PDF** — one click, pixel-perfect output
 
-- **Split-panel editor**: Form inputs on the left, live preview on the right
-- **Real-time preview**: Every keystroke updates the document instantly
-- **One-click PDF export**: Pixel-perfect PDFs via headless Chrome
-- **Brand customization**: Upload logos, pick colors, set fonts — per document
-- **Client personalization**: Add customer logos and "Prepared for" headers
-- **Template library**: Pre-built templates for common startup verticals
-- **Version history**: Auto-saves every export with full form state for easy re-use
+---
 
-## Quick Start
+## Getting Started (Non-Technical Guide)
+
+### Install these first
+
+1. **Node.js** — Go to [nodejs.org](https://nodejs.org), download the LTS version, run the installer.
+
+2. **Git** — Go to [git-scm.com](https://git-scm.com/downloads), download for your OS, install with defaults.
+
+3. **Google Chrome** — You probably have this. If not, install from [google.com/chrome](https://www.google.com/chrome/). Needed for PDF export.
+
+4. **Claude Code** — Open your terminal and run:
+   ```
+   npm install -g @anthropic-ai/claude-code
+   ```
+   You need an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/).
+
+### Setup (one time)
+
+Open your terminal (search "Terminal" on Mac, or "Git Bash" on Windows):
 
 ```bash
 git clone https://github.com/AaryanPalve5/onepager.git
-cd onepager
+cd onepager/app
 npm install
+```
+
+### Daily workflow
+
+**Step 1: Start the app**
+```bash
+cd onepager/app
 npm run dev
 ```
+Open Chrome and go to **http://localhost:3000**. You'll see a preview of the current one-pager.
 
-Open [http://localhost:3000](http://localhost:3000) and start creating.
+**Step 2: Start Claude Code**
 
-## Requirements
-
-- Node.js 18+
-- Chrome or Chromium (for PDF export — Puppeteer auto-detects it)
-
-## Usage
-
-1. **Pick a template** — choose a pre-built layout or start blank
-2. **Add your branding** — upload your logo, set your colors
-3. **Fill in content** — headline, value props, pricing, team, CTA
-4. **Preview live** — see every change reflected instantly
-5. **Export PDF** — one click, pixel-perfect output
-6. **Re-use** — load previous versions, swap customer details, export again
-
-## Customizing Your Brand
-
-Replace the example assets in `brand/` with your own:
-
-| File | What to replace |
-|------|----------------|
-| `brand/logo-500x500.png` | Your square logo |
-| `brand/logo-w-type-light.png` | Your full logo (light bg) |
-| `brand/colors.css` | Your brand colors |
-
-Then set your defaults in `.env.local`:
-
-```env
-NEXT_PUBLIC_COMPANY_NAME=Your Company
-NEXT_PUBLIC_DEFAULT_EMAIL=hello@yourcompany.com
-NEXT_PUBLIC_DEFAULT_PHONE=(555) 123-4567
-NEXT_PUBLIC_DEFAULT_WEBSITE=yourcompany.com
+Open a SECOND terminal window (keep the first one running). Navigate to the project:
+```bash
+cd onepager
+claude
 ```
 
-## Building with Claude Code
+**Step 3: Tell Claude what to make**
 
-This repo is designed to be built by [Claude Code](https://claude.com/claude-code) in a single session. Open it in Claude Code and say:
+Type naturally:
+- "Create a one-pager for Acme Corp about our teleoperation service"
+- "Change the headline to 'Transform Your Fleet Operations'"
+- "Remove the pricing section and add a testimonial quote"
+- "Make this for a different client — Blue Ocean Robotics"
 
-> "Read PRD.md and build the full application. Start with Phase 1 MVP."
+Claude reads the `CLAUDE.md` file which tells it exactly how the system works. It writes HTML directly and the preview updates in your browser within half a second.
 
-The `CLAUDE.md` file gives Claude all the context it needs: tech stack, file structure, implementation rules, and anti-patterns. The `PRD.md` contains the complete specification with UI layouts, TypeScript interfaces, template designs, and test cases.
+**Step 4: Quick edits**
 
-## Tech Stack
+The left sidebar in the browser shows text fields extracted from the document. You can type directly there for fast tweaks (headline, descriptions, etc.) without going back to Claude.
 
-- **Next.js 14** (App Router)
-- **shadcn/ui** + **Tailwind CSS**
-- **Puppeteer** (HTML → PDF)
-- **React state** (no external state management)
-- **Local filesystem** (no database)
+**Step 5: Export**
+
+When you're happy with the preview, click **Export PDF** in the top-right corner. Done!
+
+Click **Save** to keep a copy in the files list (left sidebar).
+
+### Style references
+
+Drop example designs into the `references/` folder:
+- HTML files you like the look of
+- Screenshots of designs for inspiration
+- Add URLs to `references/urls.txt`
+
+When Claude creates a new document, it reads these references and matches the style.
+
+### Stopping and restarting
+
+- Stop the app: press `Ctrl+C` in the first terminal
+- Stop Claude: type `/exit` or press `Ctrl+C`
+- Restart: run the same commands again
+
+---
+
+## For Developers
+
+### Tech Stack
+- Next.js 14 (App Router)
+- shadcn/ui + Tailwind CSS
+- Puppeteer (HTML -> PDF)
+- Local filesystem storage
+
+### Architecture
+- `app/current.html` — the working document, edited by Claude Code
+- Web app polls `/api/current-html` every 500ms
+- `data-field` attributes enable sidebar text editing
+- Export reads `current.html` and runs through Puppeteer
+- Saved files go to `app/outputs/{timestamp}/`
+
+### API Routes
+| Route | Method | Purpose |
+|-------|--------|---------|
+| `/api/current-html` | GET | Returns working file HTML + lastModified |
+| `/api/list-files` | GET | Lists saved one-pagers from outputs/ |
+| `/api/serve-file/[...path]` | GET | Serves static files from outputs/ |
+| `/api/update-text` | POST | Patches text in current.html via data-field |
+| `/api/export-pdf` | POST | Reads current.html, generates PDF |
+| `/api/save-draft` | POST | Copies current.html to outputs/ |
 
 ## License
 

@@ -4,6 +4,9 @@ outputs/
 .env
 .env.local
 *.log
+app/current.html
+app/.logo-tag.tmp
+screenshots/
 .DS_Store
 Thumbs.db
 public/logos/*

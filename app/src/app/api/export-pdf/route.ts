@@ -1,28 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, readFileSync, mkdirSync, existsSync } from "fs";
 import path from "path";
 
 export async function POST(request: NextRequest) {
   try {
-    const { html, filename, customerName } = await request.json();
+    const body = await request.json().catch(() => ({}));
+    const filename = body.filename || "onepager";
 
-    if (!html) {
-      return NextResponse.json({ error: "html is required" }, { status: 400 });
+    const currentPath = path.join(process.cwd(), "current.html");
+    if (!existsSync(currentPath)) {
+      return NextResponse.json({ error: "No working file (current.html)" }, { status: 404 });
     }
 
-    const safeName = (filename || "onepager").replace(/[^a-zA-Z0-9 ._-]/g, "");
+    const html = readFileSync(currentPath, "utf-8");
+
+    const safeName = filename.replace(/[^a-zA-Z0-9 ._-]/g, "");
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
-    const slug = customerName
-      ? customerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
-      : "draft";
+    const slug = safeName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "draft";
     const outputDir = path.join(process.cwd(), "outputs", `${timestamp}-${slug}`);
     mkdirSync(outputDir, { recursive: true });
 
-    // Save HTML snapshot
     writeFileSync(path.join(outputDir, `${safeName}.html`), html);
 
-    // Detect Chrome executable
     const executablePath =
       process.env.CHROME_PATH ||
       (process.platform === "win32"
@@ -38,19 +38,15 @@ export async function POST(request: NextRequest) {
     });
 
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "load" });
-
-    // Wait for fonts to load
+    await page.setContent(html, { waitUntil: "networkidle0" });
     await page.evaluateHandle("document.fonts.ready");
-
-    // Inject print CSS
+    // Extra wait for Google Fonts to fully render after load
+    await new Promise((r) => setTimeout(r, 500));
     await page.addStyleTag({
-      content: `
-        @media print {
-          body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          * { break-inside: avoid; }
-        }
-      `,
+      content: `@media print {
+        body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        * { break-inside: avoid; }
+      }`,
     });
 
     const pdfBuffer = await page.pdf({
@@ -64,9 +60,12 @@ export async function POST(request: NextRequest) {
 
     await browser.close();
 
-    // Save PDF
     const pdfPath = path.join(outputDir, `${safeName}.pdf`);
     writeFileSync(pdfPath, pdfBuffer);
+    writeFileSync(
+      path.join(outputDir, "metadata.json"),
+      JSON.stringify({ createdAt: new Date().toISOString(), name: safeName, source: "claude-code" }, null, 2)
+    );
 
     return new NextResponse(Buffer.from(pdfBuffer), {
       headers: {

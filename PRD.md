@@ -967,97 +967,117 @@ onepager/
 ## 12. TypeScript Interfaces
 
 ```typescript
-// lib/types.ts
+// app/src/lib/types.ts
 
 export interface OnePagerData {
-  // Template
-  template: 'teleoperation' | 'data-collection' | 'field-ops' | 'tech-support' | 'blank';
+  template: 'general' | 'saas' | 'agency' | 'consulting' | 'blank';
 
-  // Brand
   brand: {
     companyName: string;
     tagline: string;
     email: string;
     phone: string;
     website: string;
-    companyLogoUrl: string | null;  // data:// URL or path
+    companyLogoUrl: string | null;  // base64 data URL
     customerName: string;
     customerLogoUrl: string | null;
     showPreparedFor: boolean;
     primaryColor: string;       // hex
     accentColor: string;        // hex
     backgroundColor: string;    // hex
-    fontHeading: string;
-    fontBody: string;
+    // fontHeading: string;     // Future
+    // fontBody: string;        // Future
   };
 
-  // Hero
   hero: {
     headline: string;
     subheadline: string;
-    robotTypes: string[];       // tags
+    tags: string[];
   };
 
-  // Value Propositions
   valueProps: {
     columns: ValueProp[];
   };
 
-  // Pricing
-  pricing: {
+  partners: {
     sectionTitle: string;
-    model: 'per-hour' | 'per-robot' | 'monthly' | 'custom';
-    tiers: PricingTier[];
-    footerNote: string;
-    showComparison: boolean;
+    showSection: boolean;
+    logos: PartnerLogo[];
   };
 
-  // Team
+  processFlow: {
+    sectionTitle: string;
+    showSection: boolean;
+    pattern: 'linear' | 'hub-spoke' | 'before-after';
+    steps: FlowStep[];
+  };
+
+  pricing: {
+    sectionTitle: string;
+    // model: string;           // Future
+    tiers: PricingTier[];
+    footerNote: string;
+    // showComparison: boolean; // Future
+  };
+
   team: {
     sectionTitle: string;
     roles: string[];
     highlights: string[];
   };
 
-  // Security
   security: {
     sectionTitle: string;
     items: SecurityItem[];
-    showBadge: boolean;
+    // showBadge: boolean;      // Future
   };
 
-  // CTA
   cta: {
     text: string;
     email: string;
     phone: string;
     website: string;
-    showQR: boolean;
+    // showQR: boolean;         // Future
   };
 }
 
 export interface ValueProp {
-  icon: string;      // emoji or icon name
+  id: string;
+  icon: string;
   title: string;
   description: string;
   badge: string;
 }
 
 export interface PricingTier {
+  id: string;
   name: string;
   price: string;
   unit: string;
   details: string;
-  highlighted?: boolean;  // visually emphasize this tier
+  highlighted?: boolean;
 }
 
 export interface SecurityItem {
+  id: string;
   icon: string;
   text: string;
 }
 
+export interface PartnerLogo {
+  id: string;
+  name: string;
+  logoUrl: string;
+}
+
+export interface FlowStep {
+  id: string;
+  label: string;
+  description: string;
+}
+
 export interface SavedVersion {
-  id: string;         // directory name
+  id: string;
   createdAt: string;
   customerName: string;
   template: string;

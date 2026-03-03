@@ -1,36 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, readFileSync, mkdirSync, existsSync } from "fs";
 import path from "path";
 
 export async function POST(request: NextRequest) {
   try {
-    const { html, formData, customerName } = await request.json();
+    const body = await request.json().catch(() => ({}));
+    const name = body.name || "Draft";
 
-    if (!html) {
-      return NextResponse.json({ error: "html is required" }, { status: 400 });
+    const currentPath = path.join(process.cwd(), "current.html");
+    if (!existsSync(currentPath)) {
+      return NextResponse.json({ error: "No working file (current.html)" }, { status: 404 });
     }
 
+    const html = readFileSync(currentPath, "utf-8");
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
-    const slug = customerName
-      ? customerName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
-      : "draft";
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "draft";
     const outputDir = path.join(process.cwd(), "outputs", `${timestamp}-${slug}`);
     mkdirSync(outputDir, { recursive: true });
 
     writeFileSync(path.join(outputDir, "one-pager.html"), html);
     writeFileSync(
       path.join(outputDir, "metadata.json"),
-      JSON.stringify(
-        {
-          version: "1.0",
-          createdAt: new Date().toISOString(),
-          customerName: customerName || "Draft",
-          template: formData?.template || "general",
-          formData,
-        },
-        null,
-        2
-      )
+      JSON.stringify({ version: "1.0", createdAt: new Date().toISOString(), name, source: "claude-code" }, null, 2)
     );
 
     return NextResponse.json({ success: true, path: outputDir });

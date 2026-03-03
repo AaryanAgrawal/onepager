@@ -1,17 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { OnePagerData } from "@/lib/types";
-import { renderTemplate } from "@/lib/renderTemplate";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 interface PreviewPanelProps {
-  data: OnePagerData;
+  html: string | null;
 }
 
-export function PreviewPanel({ data }: PreviewPanelProps) {
-  const [zoom, setZoom] = useState(0.55);
-  const htmlContent = useMemo(() => renderTemplate(data), [data]);
+export function PreviewPanel({ html }: PreviewPanelProps) {
+  const [zoom, setZoom] = useState(0.65);
 
   const zoomLevels = [
     { label: "50%", value: 0.5 },
@@ -22,7 +19,6 @@ export function PreviewPanel({ data }: PreviewPanelProps) {
 
   return (
     <div className="flex flex-col h-full bg-muted/30">
-      {/* Toolbar */}
       <div className="flex items-center justify-between px-4 py-2 border-b bg-background">
         <span className="text-xs font-medium text-muted-foreground">Preview</span>
         <div className="flex gap-1">
@@ -41,30 +37,38 @@ export function PreviewPanel({ data }: PreviewPanelProps) {
         </div>
       </div>
 
-      {/* Preview */}
       <div className="flex-1 overflow-auto flex justify-center p-6">
-        <div
-          style={{
-            transform: `scale(${zoom})`,
-            transformOrigin: "top center",
-            width: "816px",
-            height: "1056px",
-            flexShrink: 0,
-          }}
-        >
-          <iframe
-            srcDoc={htmlContent}
+        {html ? (
+          <div
             style={{
+              transform: `scale(${zoom})`,
+              transformOrigin: "top center",
               width: "816px",
               height: "1056px",
-              border: "none",
-              borderRadius: "4px",
-              boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
-              background: "white",
+              flexShrink: 0,
             }}
-            title="One-Pager Preview"
-          />
-        </div>
+          >
+            <iframe
+              srcDoc={html}
+              style={{
+                width: "816px",
+                height: "1056px",
+                border: "none",
+                borderRadius: "4px",
+                boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
+                background: "white",
+              }}
+              title="One-Pager Preview"
+            />
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
+            <div className="text-center space-y-2">
+              <p className="font-medium">No document yet</p>
+              <p className="text-xs">Ask Claude Code to create a one-pager, or click a saved file to load it.</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
