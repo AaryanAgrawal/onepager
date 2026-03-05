@@ -44,8 +44,10 @@ export async function POST(request: NextRequest) {
     await new Promise((r) => setTimeout(r, 500));
     await page.addStyleTag({
       content: `@media print {
-        body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; margin: 0; padding: 0; background: white; }
         * { break-inside: avoid; }
+        .page { margin: 0 !important; box-shadow: none !important; border-radius: 0 !important; page-break-after: always; }
+        .page:last-child { page-break-after: auto; }
       }`,
     });
 

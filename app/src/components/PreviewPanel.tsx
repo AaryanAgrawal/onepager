@@ -1,7 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+
+const PAGE_W = 816;
+const PAGE_H = 1056;
+const PAGE_GAP = 32;
+const BODY_PAD = 32;
 
 interface PreviewPanelProps {
   html: string | null;
@@ -9,6 +14,8 @@ interface PreviewPanelProps {
 
 export function PreviewPanel({ html }: PreviewPanelProps) {
   const [zoom, setZoom] = useState(0.65);
+  const [pageCount, setPageCount] = useState(1);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const zoomLevels = [
     { label: "50%", value: 0.5 },
@@ -17,10 +24,28 @@ export function PreviewPanel({ html }: PreviewPanelProps) {
     { label: "100%", value: 1 },
   ];
 
+  // Count .page divs in HTML string for sizing (no JS injection needed)
+  useEffect(() => {
+    if (!html) { setPageCount(1); return; }
+    const matches = html.match(/class="page"/g);
+    setPageCount(matches && matches.length > 0 ? matches.length : 1);
+  }, [html]);
+
+  const iframeHeight = pageCount > 1
+    ? pageCount * PAGE_H + (pageCount - 1) * PAGE_GAP + BODY_PAD * 2
+    : PAGE_H;
+
   return (
     <div className="flex flex-col h-full bg-muted/30">
       <div className="flex items-center justify-between px-4 py-2 border-b bg-background">
-        <span className="text-xs font-medium text-muted-foreground">Preview</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-medium text-muted-foreground">Preview</span>
+          {pageCount > 1 && (
+            <span className="text-[10px] font-medium text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
+              {pageCount} pages
+            </span>
+          )}
+        </div>
         <div className="flex gap-1">
           {zoomLevels.map((z) => (
             <Button
@@ -43,29 +68,30 @@ export function PreviewPanel({ html }: PreviewPanelProps) {
             style={{
               transform: `scale(${zoom})`,
               transformOrigin: "top center",
-              width: "816px",
-              height: "1056px",
+              width: `${PAGE_W}px`,
+              height: `${iframeHeight}px`,
               flexShrink: 0,
             }}
           >
             <iframe
+              ref={iframeRef}
               srcDoc={html}
               style={{
-                width: "816px",
-                height: "1056px",
+                width: `${PAGE_W}px`,
+                height: `${iframeHeight}px`,
                 border: "none",
-                borderRadius: "4px",
-                boxShadow: "0 4px 24px rgba(0,0,0,0.12)",
-                background: "white",
+                borderRadius: pageCount > 1 ? "0" : "4px",
+                boxShadow: pageCount > 1 ? "none" : "0 4px 24px rgba(0,0,0,0.12)",
+                background: pageCount > 1 ? "#e8e8e8" : "white",
               }}
-              title="One-Pager Preview"
+              title="Document Preview"
             />
           </div>
         ) : (
           <div className="flex items-center justify-center h-full text-muted-foreground text-sm">
             <div className="text-center space-y-2">
               <p className="font-medium">No document yet</p>
-              <p className="text-xs">Ask Claude Code to create a one-pager, or click a saved file to load it.</p>
+              <p className="text-xs">Ask Claude Code to create a document, or select one from the sidebar.</p>
             </div>
           </div>
         )}

@@ -12,3 +12,16 @@ export interface EditableField {
   value: string;
   tag: string;
 }
+
+export interface TreeNode {
+  name: string;
+  type: 'folder' | 'document';
+  children?: TreeNode[];
+  path?: string;
+  pageCount?: number;
+}
+
+export interface DocumentTree {
+  version: number;
+  root: TreeNode[];
+}

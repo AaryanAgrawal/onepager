@@ -1,19 +1,112 @@
 # Claude Code Instructions — OnePager
 
+<!-- STRUCTURE NOTE: Operational discipline rules are at the TOP (highest retrieval accuracy).
+     Design reference and section library are in the MIDDLE.
+     Anti-patterns are at the BOTTOM (second highest retrieval). -->
+
 ## WHAT THIS IS
 
-A local tool for creating branded one-pager PDFs. **You write the HTML directly.** The web app at localhost:3000 is just a viewer — it polls `app/current.html` every 500ms and shows a live preview.
+A local tool for creating branded multi-page documents and one-pager PDFs. **You write the HTML directly.** The web app at localhost:3001 is a document workspace — it polls `app/current.html` every 500ms and shows a live preview. Documents are organized in `documents/` with a folder sidebar.
+
+---
+
+## OPERATIONAL DISCIPLINE — Read This First
+
+### 1. Git Sync — Always Current (STRICT)
+
+This project MUST stay synced with GitHub at all times. No exceptions.
+
+**On session start:**
+```bash
+cd onepager && git pull origin main
+```
+
+**After EVERY document or code change:**
+```bash
+git add documents/ references/ brand/ assets/ memory/ app/src/ CLAUDE.md
+git commit -m "descriptive message in imperative mood"
+```
+
+**Before session end or context switch:**
+```bash
+git push origin main
+```
+
+**Rules:**
+- NEVER leave uncommitted document changes. If you wrote HTML, commit it.
+- NEVER leave unpushed commits. If you committed, push.
+- Commit messages must describe WHAT changed: "Update Farhand page 1 card layout" not "fix stuff"
+- If git pull has conflicts, resolve them before doing anything else.
+- Only push to `main` branch. Most changes will be in: `documents/`, `references/`, `brand/`, `assets/`, `memory/`
+
+### 2. Self-Improvement — Learn From Every Session (STRICT)
+
+This system gets better with every interaction. Preferences and corrections are tracked in `onepager/memory/`.
+
+**After EVERY user correction or preference expressed:**
+1. Update `memory/preferences.md` with the pattern (what they corrected + what they wanted instead)
+2. If it's a design rule, add it to the ANTI-PATTERNS section of this CLAUDE.md
+3. If it's a "do this always" preference, add it to the relevant section of this CLAUDE.md
+
+**Before EVERY new document:**
+1. Read `memory/preferences.md` — apply ALL recorded preferences
+2. Read `memory/feature-radar.md` — check if any tracked features are relevant
+3. If the user previously corrected something similar, apply the correction preemptively
+
+**Memory files:**
+```
+onepager/memory/
+├── preferences.md    # Design likes/dislikes, corrections, patterns
+└── feature-radar.md  # Tracked feature requests + build status
+```
+
+**Self-improvement is not optional.** If the user says "don't do X" or "always do Y", that goes into `memory/preferences.md` AND into the relevant CLAUDE.md section within the same session. Don't wait. Don't forget. The next session must be better than this one.
+
+### 3. Feature Radar — Track and Build Proactively
+
+Track what gets requested. If a pattern shows up 2+ times, it's a feature worth building.
+
+**In `memory/feature-radar.md`:**
+```markdown
+## Tracked Requests
+| Request | Count | Status | Notes |
+|---------|-------|--------|-------|
+| Easier image embedding | 3 | BUILT | {{ASSET:path}} template system |
+| Drag-and-drop images | 1 | WATCHING | Would need UI work |
+```
+
+**Rules:**
+- After each session, scan what the user asked for and log patterns
+- At count=2: propose the feature to the user
+- At count=3: build it without asking (if scope is reasonable)
+- Mark features as WATCHING → PROPOSED → BUILDING → BUILT
+- When a feature is BUILT, document it in CLAUDE.md and remove from radar
+
+---
 
 ## WORKFLOW
 
-1. User asks you to create or edit a one-pager
+1. User asks you to create or edit a document
 2. You read `references/` for style examples (7 Farhand reference images + any HTML files)
 3. You read `brand/logo-w-type-light-base64.txt` for the Farhand logo
 4. You write complete HTML to `app/current.html`
 5. Web app auto-refreshes the preview within 500ms
 6. User reviews in browser, comes back with feedback
 7. You edit `app/current.html` based on their feedback
-8. Repeat until happy, then user clicks "Export PDF" in the web app
+8. Repeat until happy, then save to `documents/` folder via sidebar or API
+9. Export as PDF via "Export PDF" button
+10. **Commit and push** — every saved document change gets committed immediately
+
+### Documents Directory Workflow
+
+Documents are stored in `documents/` and organized by folder. The sidebar shows a tree view from `documents/_tree.json`.
+
+- **Load**: Click a document in the sidebar → loads from `documents/{path}` into `app/current.html`. Asset templates (`{{ASSET:path}}`) are resolved to base64 data URIs at load time.
+- **Edit**: Modify `app/current.html` directly (live preview updates instantly)
+- **Save**: Click "Save" → writes `app/current.html` back to `documents/{path}`. Base64 data URIs from known assets are converted back to `{{ASSET:path}}` templates.
+- **New document**: Write HTML to `app/current.html`, then save via API to a document path
+
+When adding a new document, update `documents/_tree.json` to include it in the tree.
 
 ## WORKING FILE
 
@@ -23,16 +116,17 @@ This is the single active document. The web app polls this file and displays it 
 
 ## HTML RULES
 
-Every one-pager must be a complete, standalone HTML document:
+Every document must be a complete, standalone HTML document:
 
 - `<!DOCTYPE html>` with `<html>`, `<head>`, `<body>`
-- **US Letter dimensions**: width 8.5in (816px), height 11in (1056px)
+- **US Letter dimensions**: width 8.5in (816px), height 11in (1056px) per page
 - All CSS must be inline or in a `<style>` tag — no external stylesheets
 - **No JavaScript** — pure HTML + CSS only
 - Google Fonts via CDN link is OK (Inter is the default font)
 - Images must be base64 data URLs embedded in the HTML
-- Content must never overflow one page — use `overflow: hidden` on body
-- Print-safe CSS is mandatory:
+- Print-safe CSS is mandatory
+
+### Single-Page Documents
 
 ```css
 @page { size: 8.5in 11in; margin: 0; }
@@ -44,6 +138,38 @@ body {
   print-color-adjust: exact !important;
 }
 ```
+
+### Multi-Page Documents
+
+For documents with 2+ pages, use `.page` divs instead of constraining the body:
+
+```css
+@page { size: 8.5in 11in; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 8.5in; margin: 0 auto; font-family: 'Inter', sans-serif;
+  -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+.page { width: 8.5in; height: 11in; overflow: hidden; position: relative;
+  box-sizing: border-box; page-break-after: always; display: flex; flex-direction: column; }
+.page:last-child { page-break-after: auto; }
+@media screen {
+  body { background: #e8e8e8; padding: 32px 0; }
+  .page { margin: 0 auto 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    border-radius: 4px; background: #fff; }
+  .page:last-child { margin-bottom: 0; }
+}
+@media print {
+  .page { margin: 0; box-shadow: none; border-radius: 0; }
+}
+```
+
+Each `.page` div is one US Letter page. The preview panel auto-detects `.page` divs and shows them stacked with gaps. PDF export uses `page-break-after: always` for proper page breaks.
+
+**Key rules for multi-page:**
+- Each `.page` div must be exactly `8.5in × 11in` with `overflow: hidden`
+- Content must NOT overflow individual pages
+- Use `margin-top: auto` on footer/CTA divs to push them to bottom of each page
+- The body is a flowing container — NOT constrained to one page height
+- Logos must be base64-embedded (no `{{LOGO}}` placeholders in documents/ files — embed directly)
 
 ## DATA-FIELD ATTRIBUTES
 
@@ -101,11 +227,36 @@ This is the full logo with the circuit icon + "Farhand" text. Use this for all F
 
 | Field | Value |
 |-------|-------|
-| Phone | 213-522-6220 |
-| Email | akshansh@farhand.live |
+| Phone | 857-498-9778 |
+| Email | aaryan@farhand.live |
 | Website | www.farhand.live |
 
 When the user specifies a different company, adapt colors, logo, and contact info accordingly.
+
+### Client / Partner Logo (Optional)
+
+When creating a one-pager for or with another company, include a placeholder for their logo in the header:
+
+```html
+<!-- Client logo placeholder — replace src with actual logo or leave as placeholder -->
+<div style="display:flex; align-items:center; gap:12px;">
+  <img src="data:image/png;base64,{farhand_logo}" style="height:36px;" alt="Farhand">
+  <span style="font-size:18px; color:#e0e0e0; font-weight:300;">&times;</span>
+  <div data-field="client-logo" style="height:36px; padding:4px 16px; border:1.5px dashed #e0e0e0; border-radius:8px; display:flex; align-items:center; font-size:12px; color:#999;">Client Logo</div>
+</div>
+```
+
+The client logo slot uses a dashed border placeholder by default. Replace with an actual `<img>` when the client provides their logo.
+
+### Page Framing
+
+Add subtle left and right border accents for visual framing:
+
+```html
+<body style="...existing styles...; border-left:3px solid #33ee69; border-right:3px solid #33ee69;">
+```
+
+This creates a subtle "frame" effect that makes the page feel like a designed document rather than plain text on white paper. The 3px green borders on left and right edges complement the 5px top accent bar.
 
 ### Layout Structure (Standard Farhand One-Pager)
 
@@ -144,29 +295,34 @@ When the user specifies a different company, adapt colors, logo, and contact inf
 | Element | Size | Weight | Notes |
 |---------|------|--------|-------|
 | Company name (in logo area) | Handled by logo image | — | Part of the logo PNG |
-| Subtitle ("Your __ partner") | 13-14px | 400 | Gray text below logo |
+| Subtitle ("Your __ partner") | 13-14px | 400 | Gray text below logo. **Never 9px.** |
 | Section title ("Our Value") | 20-22px | 700 | With green left border accent |
 | Card title | 15-16px | 700 | Inside value prop cards |
 | Body text / descriptions | 13-14px | 400 | **Never smaller than 13px** |
 | Pill badge text | 12-13px | 600 | Inside green-bordered pills |
-| Labels ("Solution made for:") | 11-12px | 500 | Uppercase, muted gray |
+| Stat numbers | 28-44px | 800 | Large accent numbers |
+| Stat labels | 13px | 500 | Below stat numbers. **Never 10px.** |
+| Labels ("Solution made for:") | 12-13px | 500 | Uppercase, muted gray. **Never 9px.** |
 | CTA headline | 20-22px | 700 | Bold, dark |
-| Contact text | 13px | 500 | Inside footer pills |
+| Contact text | 13-14px | 500 | Inside footer pills |
 
-**MINIMUM TEXT SIZE: 11px.** No text on the page should ever be smaller. Body text minimum is 13px.
+**HARD MINIMUM TEXT SIZE: 12px.** No text on the page should ever be smaller than 12px — not stat labels, not subtitles, not captions, not attribution lines. Body text minimum is 13px. When content is sparse, scale text UP (see Sizing & Density section below).
 
 ### Spacing
 
-| Element | Value |
-|---------|-------|
-| Top accent bar | 5px height, full width, `#33ee69` |
-| Page padding | 40px horizontal, 32px top (below accent bar), 24px bottom |
-| Section gap | 20-24px between major sections |
-| Card grid gap | 16-20px between cards |
-| Card internal padding | 20-24px |
-| Pill padding | 6px 16px |
-| Border radius | 10px for cards, 20px for pills |
-| Line height | 1.5 for body text, 1.3 for headings |
+These are **minimums for dense layouts** (7+ sections). For standard layouts (4-6 sections), increase by ~50%. For sparse layouts (1-3 sections), increase by ~100%.
+
+| Element | Dense (7+ sections) | Standard (4-6) | Sparse (1-3) |
+|---------|---------------------|-----------------|--------------|
+| Top accent bar | 5px height | 5px | 5px |
+| Page padding (horizontal) | 40px | 48px | 56px |
+| Page padding (top) | 32px | 40px | 48px |
+| Section gap | 20-24px | 32-40px | 48-60px |
+| Card grid gap | 16-20px | 20-24px | 28-32px |
+| Card internal padding | 20-24px | 28px | 36px |
+| Pill padding | 6px 16px | 8px 20px | 10px 24px |
+| Border radius | 10px cards, 20px pills | same | same |
+| Line height | 1.5 body, 1.3 headings | 1.6 body | 1.8 body |
 
 ### Icons — Phosphor Icons as Inline SVGs
 
@@ -295,7 +451,7 @@ Size: 20px for inline with text, 24px for standalone/section headers.
 
 ## PAGE DENSITY RULE — FILL THE PAGE
 
-**Every one-pager must fill at least 80% of the page vertically.** The Farhand reference designs ALWAYS fill the page — no huge empty gaps between content and footer.
+**Every one-pager must fill at least 75% of the page vertically.** The Farhand reference designs ALWAYS fill the page — no huge empty gaps between content and footer. Even "minimalist" designs must have enough visual structure (cards, stats, rules, borders) that they read as a designed one-pager, not a letterhead with text on it.
 
 When your primary content (e.g., a timeline, pricing table, or comparison chart) doesn't fill the page:
 1. Add a **stats row** (4 metrics in green accent text)
@@ -304,6 +460,66 @@ When your primary content (e.g., a timeline, pricing table, or comparison chart)
 4. Add a **process flow** or additional info section
 
 Combine sections until the page feels complete. The CTA footer should sit near the bottom with minimal gap above it. Use `margin-top: auto` on the CTA to push it down, but the content above should fill the space naturally.
+
+---
+
+## SIZING & DENSITY — AUTO-SCALE RULES
+
+Text and icons must NEVER be tiny. When content is sparse, scale everything UP to fill the page rather than leaving dead space.
+
+### Size Floors (Hard Minimums)
+
+| Element | Absolute Minimum | Notes |
+|---------|-----------------|-------|
+| Body text / descriptions | 13px | Scale to 14-18px when sparse |
+| Labels / captions | 12px | Includes stat labels, subtitles, attribution |
+| Pill badge text | 12px | |
+| Card titles | 15px | |
+| Section titles | 18px | |
+| Headlines | 22px | |
+| Stat numbers | 28px | |
+| Icons (inline with text) | 20px | Phosphor SVGs |
+| Icons (card/section) | 24-28px | |
+| Icons (hero/decorative) | 36px+ | |
+
+### Auto-Scale by Content Density
+
+Count the number of major sections (header, intro, cards, stats, workforce, timeline, CTA, etc.). Scale sizes based on density:
+
+| Content density | Headline | Body | Section gaps | Card padding | Stat numbers | Icons |
+|----------------|----------|------|-------------|-------------|-------------|-------|
+| **Dense** (7+ sections) | 22-26px | 13px | 24px | 20px | 28-32px | 20-24px |
+| **Standard** (4-6 sections) | 28-34px | 14-15px | 32-40px | 28px | 36-44px | 24-28px |
+| **Sparse** (1-3 sections) | 36-48px | 16-18px | 48-60px | 36px | 48-72px | 28-36px |
+
+**The rule is simple**: fewer sections → bigger everything. A page with 3 stats should have 72px numbers, not 28px numbers floating in whitespace.
+
+### Page-Fill Strategy
+
+Use flexbox column on `<body>` to ensure content distributes vertically:
+
+```css
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 11in;
+}
+```
+
+- Middle content sections can use `flex-grow: 1` to expand and fill space
+- CTA footer uses `margin-top: auto` to anchor to the bottom
+- If content fills <60% of the page, add standard filler sections (stats row → value props → workforce/platform)
+- CTA/footer MUST sit in the bottom 20% of the page
+
+### Icon Size Hierarchy
+
+| Context | Size | Example |
+|---------|------|---------|
+| Inline with text (same line) | 20px | Checkmark next to bullet text |
+| Section header accent | 24px | GearSix next to "Workforce" |
+| Card feature icon | 28-32px | Wrench inside a value prop card |
+| Hero / decorative accent | 36-48px | Large Robot icon in hero section |
+| Process flow step circle | 40-48px | Green circle with step number |
 
 ---
 
@@ -490,11 +706,138 @@ Bold headline ("Let's talk about a free pilot"). Contact details in green-border
 
 ---
 
+## ASSET EMBEDDING — `{{ASSET:path}}` Template System
+
+Images are embedded via template variables that the server resolves automatically. No more manual base64 encoding or Python scripts.
+
+### How It Works
+
+1. Drop image files into `assets/`, `brand/`, or `references/assets/`
+2. In your HTML document, reference them with `{{ASSET:path}}`:
+   ```html
+   <img src="{{ASSET:brand/logo-w-type-light.png}}" style="height:40px;" alt="Farhand">
+   <img src="{{ASSET:assets/us-map.png}}" style="width:100%;" alt="Coverage map">
+   <img src="{{ASSET:references/assets/product-photo.jpg}}" style="width:200px;" alt="Product">
+   ```
+3. When the document is **loaded** from `documents/` → `current.html`, the server resolves all `{{ASSET:path}}` to `data:image/{ext};base64,...` data URIs
+4. When the document is **saved** from `current.html` → `documents/`, the server converts known asset data URIs back to `{{ASSET:path}}` templates
+5. Documents in `documents/` stay **small and git-friendly** (just path references)
+6. `current.html` has **full base64** for live preview and PDF export
+
+### Shorthand: `{{LOGO}}`
+
+`{{LOGO}}` is an alias for `{{ASSET:brand/logo-w-type-light-base64.txt}}` — the full Farhand logo with text. Use this for quick access:
+```html
+<img src="{{LOGO}}" style="height:40px;" alt="Farhand">
+```
+
+### Supported Formats
+
+PNG, JPG, JPEG, GIF, SVG, WebP. The server detects MIME type from the file extension.
+
+### Asset Search Order
+
+The server searches for the asset in this order:
+1. Exact path relative to `onepager/` (e.g., `assets/map.png` → `onepager/assets/map.png`)
+2. `assets/` directory (e.g., `map.png` → `onepager/assets/map.png`)
+3. `brand/` directory (e.g., `logo.png` → `onepager/brand/logo.png`)
+4. `references/assets/` directory
+
+### Image Positioning Patterns
+
+**Centered hero image**:
+```html
+<div style="text-align:center; padding:24px 0;">
+  <img src="{{ASSET:assets/hero.png}}" style="height:120px;" alt="Hero">
+</div>
+```
+
+**Full-width map/banner**:
+```html
+<div style="text-align:center; padding:16px 40px;">
+  <img src="{{ASSET:assets/us-map.png}}" style="width:100%; max-width:580px;" alt="Coverage map">
+</div>
+```
+
+**Card thumbnail**:
+```html
+<div style="display:flex; gap:16px; align-items:flex-start;">
+  <img src="{{ASSET:assets/icon.png}}" style="width:48px; height:48px; border-radius:8px; object-fit:cover;" alt="Icon">
+  <div><!-- title + description --></div>
+</div>
+```
+
+**Circular avatar**:
+```html
+<img src="{{ASSET:assets/avatar.jpg}}" style="width:64px; height:64px; border-radius:50%; object-fit:cover;" alt="Person">
+```
+
+### Image Rules
+
+- Always set explicit `width`, `height`, or `max-width` — never let images overflow the page
+- Max recommended widths: 600px for full-width, 200px for cards, 120px for heroes, 64px for avatars
+- Use `object-fit: cover` for thumbnails and avatars to prevent distortion
+- Always include meaningful `alt` text
+- For `.txt` files containing raw base64 (like `logo-w-type-light-base64.txt`), the server reads the text content directly as base64
+- For binary image files (PNG, JPG, etc.), the server reads and base64-encodes them
+
+### Adding a New Image (Workflow)
+
+1. Save the image file to `assets/` (or `brand/` for logos, `references/assets/` for reference material)
+2. In your HTML: `<img src="{{ASSET:assets/filename.png}}" ...>`
+3. Load the document — server resolves automatically
+4. Done. No scripts, no manual encoding, no 1MB base64 strings in your HTML.
+
+---
+
+## REFERENCE DOCUMENT INGESTION
+
+Users can provide text files, specs, or other documents to use as content source for one-pagers. Claude reads the document and maps its content to the standard one-pager sections.
+
+### How It Works
+
+1. User says "create a one-pager from `references/some-file.txt`"
+2. Read the file and extract key information
+3. Map to standard sections: company name → header, stats → stats row, features → cards, etc.
+4. Generate the one-pager using Farhand visual style (or user-specified style) with the extracted content
+
+### Content Extraction Rules
+
+When reading a reference document, look for and extract:
+
+| Content Type | Maps To |
+|-------------|---------|
+| Company name / brand | Header logo area, page title |
+| Tagline / mission | Subtitle under logo |
+| Target market / audience | "Solution made for" pills |
+| Key statistics (numbers + labels) | Stats row section |
+| Value propositions / benefits | 3-column card grid |
+| Features / capabilities | Checklist with icons |
+| Team / workforce info | Workforce column |
+| Tech / platform info | AI Platform column |
+| Contact info | CTA footer pills |
+| Timeline / milestones | Timeline section |
+| Pricing | Pricing table |
+| Competitors / comparison | Comparison table |
+| Testimonials / quotes | Pull-quote section |
+
+### Rules
+
+- **Use ONLY content from the document** — do not invent stats, quotes, or features not in the source
+- **Adapt visual style, not content** — the layout follows Farhand visual language, but text comes from the document
+- **Fill gaps intelligently** — if the doc has no stats, skip the stats row. Don't fabricate numbers.
+- **When the document specifies a different company**, remove Farhand branding and use the company's name/colors if provided
+- **Summarize long content** — a paragraph in the doc becomes a 1-2 sentence card description
+- **Preserve key numbers exactly** — "99.5% uptime" stays "99.5%", not "nearly 100%"
+
+---
+
 ## REFERENCES
 
 Before generating a new one-pager, **always check** `references/` for style examples:
 - **Images (PNG, JPG)**: 7 Farhand reference one-pagers — match their visual style
 - **HTML files**: read them and replicate their style
+- **Text files**: content sources for generating one-pagers (see Reference Document Ingestion above)
 - `urls.txt`: list of URLs to reference (read the file, fetch URLs if needed)
 
 The reference images show the canonical Farhand one-pager style. Study them for layout, spacing, and visual weight before creating new documents.
@@ -513,7 +856,7 @@ Preserve the overall structure. Don't rewrite sections the user didn't ask to ch
 ```bash
 cd app
 npm install
-npm run dev    # http://localhost:3000
+npm run dev    # http://localhost:3001
 ```
 
 ## SAVING AND EXPORTING
@@ -532,27 +875,51 @@ onepager/
 │   ├── current.html              # THE WORKING FILE (you write here)
 │   ├── src/
 │   │   ├── app/
-│   │   │   ├── page.tsx          # Viewer + sidebar + polling
-│   │   │   └── api/              # API routes (current-html, export-pdf, etc.)
+│   │   │   ├── page.tsx          # Document workspace + sidebar + polling
+│   │   │   └── api/
+│   │   │       ├── current-html/ # GET — returns current.html contents
+│   │   │       ├── export-pdf/   # POST — Puppeteer PDF export
+│   │   │       ├── documents/
+│   │   │       │   ├── tree/     # GET — returns _tree.json
+│   │   │       │   ├── load/     # POST — loads doc, resolves {{ASSET:path}} → base64
+│   │   │       │   └── save/     # POST — saves doc, un-resolves base64 → {{ASSET:path}}
+│   │   │       └── ...
 │   │   ├── components/
-│   │   │   ├── PreviewPanel.tsx   # iframe preview with zoom
-│   │   │   ├── FileBrowser.tsx    # Saved files list
+│   │   │   ├── PreviewPanel.tsx   # iframe preview with zoom + multi-page support
+│   │   │   ├── DocumentTree.tsx   # Folder tree sidebar (recursive)
+│   │   │   ├── FileBrowser.tsx    # Saved exports list (collapsible)
 │   │   │   └── TextFields.tsx     # Inline text editor
 │   │   └── lib/
-│   │       ├── types.ts           # SavedFile, EditableField
+│   │       ├── types.ts           # SavedFile, EditableField, TreeNode
+│   │       ├── asset-resolver.ts  # {{ASSET:path}} resolve/unresolve engine
 │   │       └── utils.ts           # Helpers
 │   ├── outputs/                   # Saved versions (gitignored)
 │   └── package.json
+├── assets/                        # Embeddable images (auto-resolved via {{ASSET:path}})
+├── documents/                     # Organized document library (git-tracked)
+│   ├── _tree.json                # Folder structure metadata
+│   ├── Client Communication/     # Client-facing docs
+│   └── Company Materials/        # Internal company docs
+│       ├── Field/
+│       │   ├── Farhand.html      # 3-page sales document
+│       │   └── Approved Copy.html # Approved marketing copy reference
+│       ├── Data/
+│       └── Teleop/
+├── memory/                        # Self-improvement state (git-tracked)
+│   ├── preferences.md            # Design likes/dislikes, corrections
+│   └── feature-radar.md          # Tracked feature requests + status
 ├── brand/                         # Farhand logo + colors
-│   ├── logo-w-type-light-base64.txt  # Base64 full logo for embedding
+│   ├── logo-w-type-light-base64.txt  # Base64 full logo ({{LOGO}} shorthand)
 │   ├── logo-w-type-light.png     # Full logo with text (light bg)
 │   ├── logo-w-type-dark.png      # Full logo with text (dark bg)
 │   ├── logo-500x500.png          # Square symbol logo
-│   ├── logo-250-base64.txt       # Base64 square icon (legacy)
+│   ├── logo-250-base64.txt       # Base64 square icon (legacy — do not use)
 │   ├── favicon.svg               # Browser tab icon
 │   └── colors.css                # CSS custom properties
 ├── references/                    # Style examples for Claude to match
-│   ├── AMR.png                   # AMR support one-pager
+│   ├── AMR.png                   # AMR support one-pager (PAGE 1 REFERENCE)
+│   ├── assets/                   # Embeddable reference images
+│   │   └── us-map-farhand.png    # US coverage map for page 2
 │   ├── Farhand Teleoperation.png # Teleoperation one-pager
 │   ├── Generic Support Partner.png
 │   ├── Research Labs.png
@@ -561,7 +928,7 @@ onepager/
 │   ├── farhand-logo-icon.png     # Logo on green background
 │   ├── README.md
 │   └── urls.txt
-├── CLAUDE.md                      # This file
+├── CLAUDE.md                      # This file — the system prompt
 ├── README.md
 └── PRD.md
 ```
@@ -576,6 +943,10 @@ onepager/
 - NEVER hardcode Farhand branding when creating for a different company
 - NEVER forget `data-field` attributes on editable text elements
 - NEVER use emojis — use Phosphor Icons as inline SVGs
-- NEVER use text smaller than 11px — body text minimum is 13px
+- NEVER use text smaller than 12px — not for stat labels, subtitles, captions, or ANY element. Body text minimum is 13px.
+- NEVER use 9-10px text for anything — this was a recurring violation. Stat labels, header subtitles, and attribution lines were all shrinking to 9-10px. The hard floor is 12px.
+- NEVER leave 25%+ of the page as empty whitespace — if content is sparse, scale UP text/spacing/icons to fill the page
 - NEVER use `brand/logo-250-base64.txt` — use `brand/logo-w-type-light-base64.txt`
 - NEVER nest `data-field` attributes (e.g., `<div data-field="a"><span data-field="b">`) — the update-text regex breaks on nested fields. Each `data-field` element must contain ONLY text, no child elements with their own `data-field`.
+- NEVER produce a page that looks like a plain letterhead — even minimalist layouts need visual structure (cards, borders, stats, rules). Every page should read as a designed sales document.
+- NEVER fabricate numbers, stats, claims, or data — only use what's in Approved Copy or sourced from verified partner websites (e.g., fieldnation.com). If a stat doesn't exist in an approved source, don't put it on the page. Ask the user instead.

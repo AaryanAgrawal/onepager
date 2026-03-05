@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "root": [
+    {
+      "name": "Client Communication",
+      "type": "folder",
+      "children": []
+    },
+    {
+      "name": "Company Materials",
+      "type": "folder",
+      "children": [
+        {
+          "name": "Field",
+          "type": "folder",
+          "children": [
+            {
+              "name": "Farhand",
+              "type": "document",
+              "path": "Company Materials/Field/Farhand.html",
+              "pageCount": 3
+            }
+          ]
+        },
+        {
+          "name": "Data",
+          "type": "folder",
+          "children": []
+        },
+        {
+          "name": "Teleop",
+          "type": "folder",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
