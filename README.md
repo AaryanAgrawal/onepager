@@ -1,122 +1,316 @@
 # OnePager
 
-Create beautiful, branded one-pager PDFs by describing what you want. Claude Code writes the HTML, you see it live, export when happy.
+Create professional, branded sales documents by talking to Claude Code. You describe what you want — it builds the document, you see it live in your browser, tweak anything, and export as PDF.
 
-## How It Works
-
-1. **Start the app** — see a live preview in your browser
-2. **Tell Claude Code what you want** — "make a one-pager for Acme Corp about our robotics platform"
-3. **Claude writes the HTML** — preview updates automatically
-4. **Tweak text in the sidebar** — quick edits without re-prompting
-5. **Export PDF** — one click, pixel-perfect output
+No design skills needed. No coding needed.
 
 ---
 
-## Getting Started (Non-Technical Guide)
+## What You Can Do
 
-### Install these first
+- **Create sales one-pagers** — "make a one-pager for Acme Corp about our field service"
+- **Build multi-page documents** — 3-page sales decks, pricing sheets, coverage maps
+- **Edit text in the browser** — quick sidebar fields for headlines, descriptions, contact info
+- **Drop in images** — drag photos, maps, or logos onto the page
+- **Organize documents** — folder sidebar for all your company materials
+- **Export PDFs** — one click, print-ready output
 
-1. **Node.js** — Go to [nodejs.org](https://nodejs.org), download the LTS version, run the installer.
+---
 
-2. **Git** — Go to [git-scm.com](https://git-scm.com/downloads), download for your OS, install with defaults.
+## Setup (One Time)
 
-3. **Google Chrome** — You probably have this. If not, install from [google.com/chrome](https://www.google.com/chrome/). Needed for PDF export.
+### 1. Install Node.js
 
-4. **Claude Code** — Open your terminal and run:
-   ```
-   npm install -g @anthropic-ai/claude-code
-   ```
-   You need an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/).
+Go to [nodejs.org](https://nodejs.org), download the **LTS** version, run the installer. Click through the defaults.
 
-### Setup (one time)
+### 2. Install Git
 
-Open your terminal (search "Terminal" on Mac, or "Git Bash" on Windows):
+Go to [git-scm.com](https://git-scm.com/downloads), download for your OS, install with defaults.
 
+### 3. Install Google Chrome
+
+You probably have this. If not, get it from [google.com/chrome](https://www.google.com/chrome/). Chrome is used for PDF export.
+
+### 4. Install Claude Code
+
+Open your terminal:
+- **Mac**: search "Terminal" in Spotlight
+- **Windows**: search "Git Bash" in the Start menu
+
+Run this command:
+```
+npm install -g @anthropic-ai/claude-code
+```
+
+You need an Anthropic API key. Get one at [console.anthropic.com](https://console.anthropic.com/). When you first run `claude`, it will ask for this key.
+
+### 5. Clone the project
+
+In your terminal:
 ```bash
-git clone https://github.com/AaryanPalve5/onepager.git
+git clone https://github.com/AaryanAgrawal/onepager.git
 cd onepager/app
 npm install
 ```
 
-### Daily workflow
+That's it. You're set up.
 
-**Step 1: Start the app**
+---
+
+## Daily Workflow
+
+You'll need **two terminal windows** open. Keep both running while you work.
+
+### Terminal 1 — Start the app
+
 ```bash
 cd onepager/app
 npm run dev
 ```
-Open Chrome and go to **http://localhost:3000**. You'll see a preview of the current one-pager.
 
-**Step 2: Start Claude Code**
+Open Chrome and go to **http://localhost:3001**
 
-Open a SECOND terminal window (keep the first one running). Navigate to the project:
+You'll see the OnePager workspace with a folder sidebar on the left and a document preview on the right.
+
+### Terminal 2 — Start Claude Code
+
+Open a second terminal window. Navigate to the project and start Claude:
+
 ```bash
 cd onepager
 claude
 ```
 
-**Step 3: Tell Claude what to make**
+Claude reads the `CLAUDE.md` file automatically — it knows exactly how the system works, what your brand looks like, and how to build documents.
 
-Type naturally:
-- "Create a one-pager for Acme Corp about our teleoperation service"
-- "Change the headline to 'Transform Your Fleet Operations'"
-- "Remove the pricing section and add a testimonial quote"
-- "Make this for a different client — Blue Ocean Robotics"
+---
 
-Claude reads the `CLAUDE.md` file which tells it exactly how the system works. It writes HTML directly and the preview updates in your browser within half a second.
+## Using Claude Code
 
-**Step 4: Quick edits**
+### Creating a new document
 
-The left sidebar in the browser shows text fields extracted from the document. You can type directly there for fast tweaks (headline, descriptions, etc.) without going back to Claude.
+Type what you want in plain English:
 
-**Step 5: Export**
+```
+Create a one-pager for Acme Corp about our teleoperation service
+```
 
-When you're happy with the preview, click **Export PDF** in the top-right corner. Done!
+```
+Make a 3-page sales deck: page 1 is the overview, page 2 is coverage, page 3 is pricing
+```
 
-Click **Save** to keep a copy in the files list (left sidebar).
+```
+Create a one-pager from references/acme-brief.txt
+```
 
-### Style references
+Claude writes the HTML and your browser preview updates within half a second.
 
-Drop example designs into the `references/` folder:
-- HTML files you like the look of
-- Screenshots of designs for inspiration
-- Add URLs to `references/urls.txt`
+### Editing an existing document
 
-When Claude creates a new document, it reads these references and matches the style.
+Click a document in the left sidebar to load it, then tell Claude what to change:
 
-### Stopping and restarting
+```
+Change the headline to "Transform Your Fleet Operations"
+```
 
-- Stop the app: press `Ctrl+C` in the first terminal
-- Stop Claude: type `/exit` or press `Ctrl+C`
-- Restart: run the same commands again
+```
+Remove the pricing section and add a testimonial quote
+```
+
+```
+Make the stats numbers bigger
+```
+
+```
+Swap the two columns in the workforce section
+```
+
+### Adding images
+
+**Option A — Drag and drop** (easiest)
+
+Drag any image file (PNG, JPG, SVG, WebP) from your computer onto the browser page. A green overlay appears — drop it. The image is saved to `assets/` and you'll see the template tag in the sidebar. Tell Claude:
+
+```
+Use the map image I just uploaded on page 2
+```
+
+**Option B — Tell Claude the file path**
+
+If the image is already on your computer:
+
+```
+Add the image at C:\Users\me\Downloads\product-photo.png as the hero image
+```
+
+Claude will copy it to `assets/` and embed it.
+
+### Quick Edit sidebar
+
+The left sidebar shows text fields extracted from the current document:
+- Headlines, descriptions, badge text
+- Contact info (phone, email, website)
+- Value proposition titles and descriptions
+
+Type directly in these fields for instant changes — no need to ask Claude for small text tweaks.
+
+### Saving documents
+
+Click **Save** in the top-right corner. If you loaded a document from the folder sidebar, it saves back to that location. Otherwise it saves as a draft.
+
+### Exporting PDFs
+
+Click **Export PDF** in the top-right corner. Enter a filename. A print-ready PDF downloads to your computer.
+
+---
+
+## Managing Documents
+
+### Folder sidebar
+
+The left sidebar shows your document library organized in folders:
+
+```
+Client Communication/
+Company Materials/
+  Field/
+    Farhand          (3 pages)
+  Data/
+  Teleop/
+```
+
+Click any document to load it into the editor. Click folders to expand/collapse.
+
+### Adding new folders or documents
+
+Tell Claude:
+
+```
+Create a new document called "Acme Proposal" in Client Communication/
+```
+
+Claude will create the HTML file and update the folder tree.
+
+### Where files live
+
+| What | Where |
+|------|-------|
+| Your documents | `onepager/documents/` |
+| Brand logos | `onepager/brand/` |
+| Uploaded images | `onepager/assets/` |
+| Reference designs | `onepager/references/` |
+| Working file | `onepager/app/current.html` |
+| Exported PDFs | Downloaded to your computer |
+
+---
+
+## Tips
+
+### Give Claude reference material
+
+Drop example designs, screenshots, or text files into `references/`:
+- **Images** — Claude will match the visual style
+- **Text files** — Claude will extract content and build a document from it
+- **URLs** — Add to `references/urls.txt` and Claude can fetch them
+
+### Be specific about what you want
+
+Good:
+```
+Create a one-pager for Boston Dynamics about our AMR field service.
+Include: overview, 3 value props, workforce stats, AI platform features, and CTA.
+Use the Farhand green style.
+```
+
+Less good:
+```
+Make something nice
+```
+
+### Use approved copy
+
+The file `documents/Company Materials/Field/Approved Copy.html` contains all verified marketing text. Tell Claude:
+
+```
+Use the approved copy for the value propositions
+```
+
+### Common Claude Code commands
+
+| What to type | What happens |
+|-------------|-------------|
+| `claude` | Start Claude Code |
+| `/exit` or `Ctrl+C` | Stop Claude Code |
+| `Ctrl+C` in Terminal 1 | Stop the web app |
+
+---
+
+## Stopping and Restarting
+
+- **Stop the app**: Press `Ctrl+C` in Terminal 1
+- **Stop Claude**: Type `/exit` or press `Ctrl+C` in Terminal 2
+- **Restart**: Run the same commands again (`npm run dev` and `claude`)
+
+Your documents are saved in the `documents/` folder and persist between sessions.
+
+---
+
+## Troubleshooting
+
+### "command not found: claude"
+
+You need to install Claude Code first:
+```
+npm install -g @anthropic-ai/claude-code
+```
+
+### "command not found: npm"
+
+You need to install Node.js first. Go to [nodejs.org](https://nodejs.org).
+
+### Preview shows "No document yet"
+
+Either:
+1. Click a document in the folder sidebar to load one, or
+2. Ask Claude to create a new document
+
+### PDF export fails
+
+Make sure Google Chrome is installed. The PDF exporter uses Chrome (via Puppeteer) to render the pages.
+
+### Images not showing
+
+Make sure image files are in `assets/`, `brand/`, or `references/assets/`. If using the template syntax `{{ASSET:path}}`, the path must be relative to the `onepager/` directory.
 
 ---
 
 ## For Developers
 
 ### Tech Stack
+
 - Next.js 14 (App Router)
 - shadcn/ui + Tailwind CSS
-- Puppeteer (HTML -> PDF)
+- Puppeteer (HTML to PDF)
 - Local filesystem storage
 
-### Architecture
-- `app/current.html` — the working document, edited by Claude Code
-- Web app polls `/api/current-html` every 500ms
-- `data-field` attributes enable sidebar text editing
-- Export reads `current.html` and runs through Puppeteer
-- Saved files go to `app/outputs/{timestamp}/`
+### Key Architecture
+
+- `app/current.html` — single working document, edited by Claude Code
+- Web app polls `/api/current-html` every 500ms for live preview
+- `data-field` attributes on HTML elements enable sidebar text editing
+- `{{ASSET:path}}` templates in documents/ are resolved to base64 at load time
+- Multi-page documents use `.page` divs (8.5in x 11in each)
 
 ### API Routes
+
 | Route | Method | Purpose |
 |-------|--------|---------|
 | `/api/current-html` | GET | Returns working file HTML + lastModified |
-| `/api/list-files` | GET | Lists saved one-pagers from outputs/ |
-| `/api/serve-file/[...path]` | GET | Serves static files from outputs/ |
+| `/api/documents/tree` | GET | Returns folder tree from _tree.json |
+| `/api/documents/load` | POST | Loads doc from documents/ into current.html (resolves assets) |
+| `/api/documents/save` | POST | Saves current.html to documents/ (unresolves assets) |
+| `/api/assets/upload` | POST | Saves uploaded image to assets/ |
 | `/api/update-text` | POST | Patches text in current.html via data-field |
-| `/api/export-pdf` | POST | Reads current.html, generates PDF |
+| `/api/export-pdf` | POST | Generates PDF from current.html |
 | `/api/save-draft` | POST | Copies current.html to outputs/ |
-
-## License
-
-MIT
+| `/api/list-files` | GET | Lists saved exports from outputs/ |
