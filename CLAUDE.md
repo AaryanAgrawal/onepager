@@ -12,14 +12,30 @@ A local tool for creating branded multi-page documents and one-pager PDFs. **You
 
 ## OPERATIONAL DISCIPLINE — Read This First
 
+### 0. Auto-Start — Run Everything on Session Start (STRICT)
+
+When a user starts Claude in the `onepager/` directory, you MUST immediately:
+
+1. Pull latest from GitHub:
+```bash
+git pull origin main
+```
+
+2. Install dependencies if needed and start the dev server in the background:
+```bash
+cd app && npm install && npm run dev &
+cd ..
+```
+
+3. Tell the user: "Preview is live at http://localhost:3001 — what would you like to create?"
+
+The user should NEVER have to run `npm install`, `npm run dev`, or any terminal commands themselves. Claude handles everything.
+
 ### 1. Git Sync — Always Current (STRICT)
 
 This project MUST stay synced with GitHub at all times. No exceptions.
 
-**On session start:**
-```bash
-cd onepager && git pull origin main
-```
+**On session start:** (handled by Auto-Start above)
 
 **After EVERY document or code change:**
 ```bash
