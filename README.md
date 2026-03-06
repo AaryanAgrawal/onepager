@@ -4,35 +4,29 @@ Create branded sales documents by talking to Claude Code. Describe what you want
 
 ---
 
-## Setup (One Time)
+## Setup
 
-**Step 1.** Install [Node.js LTS](https://nodejs.org) and [Git](https://git-scm.com/downloads) — use default settings for both.
+**Step 1.** Install [Node.js LTS](https://nodejs.org), [Git](https://git-scm.com/downloads), and [Google Chrome](https://www.google.com/chrome/) — use default settings.
 
-**Step 2.** Install [Google Chrome](https://www.google.com/chrome/) (needed for PDF export).
+**Step 2.** Open a terminal (Mac: Terminal, Windows: Git Bash) and run:
 
-**Step 3.** Get an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/).
-
-**Step 4.** Open a terminal (Mac: Terminal, Windows: Git Bash) and run:
-
-```bash
+```
 npm install -g @anthropic-ai/claude-code
-git clone https://github.com/AaryanAgrawal/onepager.git
 ```
 
-Done.
+**Step 3.** Get an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/). Claude will ask for it the first time you run it.
 
----
+**Step 4.** Start Claude:
 
-## Start Working
-
-Open a terminal and run:
-
-```bash
-cd onepager
+```
 claude
 ```
 
-Claude starts the preview server, opens everything, and asks what you'd like to create. Open Chrome to **http://localhost:3001** to see the live preview.
+Claude clones the project, installs everything, starts the preview server, and asks what you'd like to create. Open Chrome to **http://localhost:3001** to see the live preview.
+
+---
+
+## Usage
 
 Just talk to Claude:
 
@@ -44,20 +38,11 @@ Just talk to Claude:
 
 The browser updates live as Claude works.
 
----
+**Images** — drag any image onto the browser page, then tell Claude to use it.
 
-## Images
+**Save** — click Save in the top-right corner.
 
-Drag any image (PNG, JPG, SVG, WebP) onto the browser page, then tell Claude:
-
-> "Use the image I just uploaded as the hero image"
-
----
-
-## Save & Export
-
-- **Save** — click Save in the top-right corner
-- **Export PDF** — click Export PDF, enter a filename, and it downloads
+**Export PDF** — click Export PDF, enter a filename, and it downloads.
 
 ---
 

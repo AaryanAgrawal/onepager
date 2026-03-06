@@ -14,22 +14,27 @@ A local tool for creating branded multi-page documents and one-pager PDFs. **You
 
 ### 0. Auto-Start — Run Everything on Session Start (STRICT)
 
-When a user starts Claude in the `onepager/` directory, you MUST immediately:
+The user should NEVER run terminal commands themselves. Claude handles everything.
 
-1. Pull latest from GitHub:
+When a user starts Claude, you MUST immediately:
+
+1. If `onepager/` doesn't exist yet, clone it:
 ```bash
-git pull origin main
+git clone https://github.com/AaryanAgrawal/onepager.git
 ```
 
-2. Install dependencies if needed and start the dev server in the background:
+2. Pull latest:
+```bash
+cd onepager && git pull origin main
+```
+
+3. Install dependencies and start the dev server in the background:
 ```bash
 cd app && npm install && npm run dev &
 cd ..
 ```
 
-3. Tell the user: "Preview is live at http://localhost:3001 — what would you like to create?"
-
-The user should NEVER have to run `npm install`, `npm run dev`, or any terminal commands themselves. Claude handles everything.
+4. Tell the user: "Preview is live at http://localhost:3001 — what would you like to create?"
 
 ### 1. Git Sync — Always Current (STRICT)
 
