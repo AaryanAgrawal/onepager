@@ -14,8 +14,10 @@ Learned patterns from user feedback. Apply ALL of these to every new document.
 
 - **ONLY use Phosphor Icons** — never generate custom SVGs or hand-draw icon paths
 - **ONLY use existing images and logos** — never try to create images programmatically
-- Phosphor Icons are embedded as inline SVGs from https://phosphoricons.com (Regular weight)
-- Fetch actual SVG paths from `https://unpkg.com/@phosphor-icons/core@2.1.1/assets/regular/{name}.svg`
+- **Always use FILLED icons** — use `ph-fill` weight, never regular/outline. Class pattern: `class="ph-fill ph-icon-name"`
+- Use Phosphor Icons via CDN: `<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">`
+- Icon usage: `<i class="ph-fill ph-icon-name" style="font-size:20px; color:#009F4A;"></i>`
+- Never use inline SVG paths — use the CDN font approach instead
 - Never use emojis as icon substitutes
 
 ## Logo

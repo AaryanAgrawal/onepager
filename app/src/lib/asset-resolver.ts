@@ -54,10 +54,37 @@ function fileToDataUri(filePath: string): string {
 }
 
 /**
- * Resolve all {{ASSET:path}} and {{LOGO}} templates to base64 data URIs.
+ * Resolve all {{ASSET:path}} and {{LOGO}} templates to local server URLs.
  * Used when loading a document from documents/ into current.html.
+ * Images are served via /api/assets/serve/ — no more base64 blobs.
  */
 export function resolveAssets(html: string): string {
+  // Resolve {{LOGO}} shorthand
+  let resolved = html.replace(/\{\{LOGO\}\}/g, () => {
+    return "/api/assets/serve/brand/logo-w-type-light-base64.txt";
+  });
+
+  // Resolve {{ASSET:path}} templates to local URLs
+  resolved = resolved.replace(/\{\{ASSET:([^}]+)\}\}/g, (_match, assetPath: string) => {
+    const trimmed = assetPath.trim();
+    const filePath = findAsset(trimmed);
+    if (!filePath) {
+      console.warn(`[asset-resolver] Asset not found: ${trimmed}`);
+      return _match; // Leave template in place if not found
+    }
+    // Use the relative path from onepager root for the URL
+    const relativePath = path.relative(ONEPAGER_ROOT, filePath).replace(/\\/g, "/");
+    return `/api/assets/serve/${relativePath}`;
+  });
+
+  return resolved;
+}
+
+/**
+ * Resolve assets to base64 data URIs — used only for PDF export
+ * where the HTML must be fully self-contained.
+ */
+export function resolveAssetsBase64(html: string): string {
   // Resolve {{LOGO}} shorthand
   let resolved = html.replace(/\{\{LOGO\}\}/g, () => {
     const logoPath = findAsset("brand/logo-w-type-light-base64.txt");
@@ -70,8 +97,15 @@ export function resolveAssets(html: string): string {
     const filePath = findAsset(assetPath.trim());
     if (!filePath) {
       console.warn(`[asset-resolver] Asset not found: ${assetPath}`);
-      return _match; // Leave template in place if not found
+      return _match;
     }
+    return fileToDataUri(filePath);
+  });
+
+  // Also resolve /api/assets/serve/ URLs back to base64
+  resolved = resolved.replace(/\/api\/assets\/serve\/([^"'\s)]+)/g, (_match, assetPath: string) => {
+    const filePath = findAsset(assetPath);
+    if (!filePath) return _match;
     return fileToDataUri(filePath);
   });
 
@@ -120,13 +154,19 @@ function buildAssetMap(): Map<string, string> {
 }
 
 /**
- * Convert base64 data URIs back to {{ASSET:path}} templates.
+ * Convert base64 data URIs and /api/assets/serve/ URLs back to {{ASSET:path}} templates.
  * Used when saving current.html back to documents/.
  */
 export function unresolveAssets(html: string): string {
-  const assetMap = buildAssetMap();
-
   let result = html;
+
+  // Convert /api/assets/serve/ URLs back to {{ASSET:path}}
+  result = result.replace(/\/api\/assets\/serve\/([^"'\s)]+)/g, (_match, assetPath: string) => {
+    return `{{ASSET:${assetPath}}}`;
+  });
+
+  // Also handle any remaining base64 data URIs (backwards compat)
+  const assetMap = buildAssetMap();
   assetMap.forEach((template, dataUri) => {
     if (result.includes(dataUri)) {
       result = result.split(dataUri).join(template);

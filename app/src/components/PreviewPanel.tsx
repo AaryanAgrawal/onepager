@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const PAGE_W = 816;
 const PAGE_H = 1056;
-const PAGE_GAP = 32;
+const PAGE_GAP = 40;
 const BODY_PAD = 32;
 
 interface PreviewPanelProps {
@@ -82,7 +82,7 @@ export function PreviewPanel({ html }: PreviewPanelProps) {
                 border: "none",
                 borderRadius: pageCount > 1 ? "0" : "4px",
                 boxShadow: pageCount > 1 ? "none" : "0 4px 24px rgba(0,0,0,0.12)",
-                background: pageCount > 1 ? "#e8e8e8" : "white",
+                background: pageCount > 1 ? "#f0f0f0" : "white",
               }}
               title="Document Preview"
             />

@@ -4,12 +4,12 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { EditableField } from "@/lib/types";
 import { PreviewPanel } from "@/components/PreviewPanel";
 import { DocumentTree } from "@/components/DocumentTree";
-import { FileBrowser } from "@/components/FileBrowser";
+// FileBrowser removed — user preference
 import { TextFields } from "@/components/TextFields";
 import { ExportNameDialog } from "@/components/ExportNameDialog";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { FileDown, Save, ChevronDown, ChevronRight } from "lucide-react";
+import { FileDown, Save, Copy, Palette, Maximize2 } from "lucide-react";
 
 function parseFields(html: string): EditableField[] {
   const fields: EditableField[] = [];
@@ -39,7 +39,7 @@ export default function Home() {
   const [status, setStatus] = useState<string | null>(null);
   const [showExportDialog, setShowExportDialog] = useState(false);
   const [activeDocPath, setActiveDocPath] = useState<string | null>(null);
-  const [showExports, setShowExports] = useState(false);
+  const [showPalette, setShowPalette] = useState(false);
   const [dragging, setDragging] = useState(false);
   const [recentAssets, setRecentAssets] = useState<Array<{ filename: string; template: string }>>([]);
   const lastModifiedRef = useRef(0);
@@ -205,6 +205,53 @@ export default function Home() {
     e.preventDefault();
   }, []);
 
+  const handleDuplicate = useCallback(async () => {
+    if (!activeDocPath) {
+      setStatusWithAutoDismiss("Save the document first before duplicating");
+      return;
+    }
+    try {
+      // Load current HTML
+      const res = await fetch("/api/current-html");
+      const data = await res.json();
+      if (!data.html) throw new Error("No document to duplicate");
+
+      // Determine new path
+      const dir = activeDocPath.substring(0, activeDocPath.lastIndexOf("/"));
+      const filename = activeDocPath.split("/").pop()?.replace(".html", "") || "Document";
+      const newPath = `${dir}/${filename} (Copy).html`;
+
+      // Save as new document
+      const saveRes = await fetch("/api/documents/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: newPath }),
+      });
+      if (!saveRes.ok) throw new Error("Duplicate failed");
+      setActiveDocPath(newPath);
+      setStatusWithAutoDismiss(`Duplicated as: ${filename} (Copy)`);
+    } catch (err) {
+      setStatusWithAutoDismiss(`Error: ${err instanceof Error ? err.message : "Duplicate failed"}`);
+    }
+  }, [activeDocPath, setStatusWithAutoDismiss]);
+
+  const handleAutoSpace = useCallback(async () => {
+    setStatus(null);
+    try {
+      const res = await fetch("/api/auto-space", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Auto-space failed");
+      lastModifiedRef.current = 0; // Force next poll to pick up changes
+      setStatusWithAutoDismiss(
+        data.adjustments?.length
+          ? `Auto-spaced ${data.pages} page(s)`
+          : "No adjustments needed"
+      );
+    } catch (err) {
+      setStatusWithAutoDismiss(`Error: ${err instanceof Error ? err.message : "Auto-space failed"}`);
+    }
+  }, [setStatusWithAutoDismiss]);
+
   const copyToClipboard = useCallback((text: string) => {
     navigator.clipboard.writeText(text);
     setStatusWithAutoDismiss("Copied!");
@@ -245,6 +292,12 @@ export default function Home() {
               {status}
             </span>
           )}
+          <Button type="button" variant="outline" size="sm" onClick={handleDuplicate} disabled={!html || !activeDocPath} title="Duplicate document">
+            <Copy className="h-4 w-4 mr-1" /> Duplicate
+          </Button>
+          <Button type="button" variant="outline" size="sm" onClick={handleAutoSpace} disabled={!html} title="Auto-space">
+            <Maximize2 className="h-4 w-4 mr-1" /> Auto-space
+          </Button>
           <Button type="button" variant="outline" size="sm" onClick={handleSave} disabled={saving || !html}>
             <Save className="h-4 w-4 mr-1" /> {saving ? "Saving..." : "Save"}
           </Button>
@@ -266,16 +319,47 @@ export default function Home() {
 
             <Separator />
 
-            {/* Collapsible saved exports */}
+            {/* Color Palette */}
             <div className="p-3">
               <button
-                onClick={() => setShowExports(!showExports)}
-                className="flex items-center gap-1 text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 hover:text-foreground transition-colors"
+                onClick={() => setShowPalette(!showPalette)}
+                className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2 hover:text-foreground transition-colors"
               >
-                {showExports ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
-                Saved Exports
+                <Palette size={12} />
+                Color Palette
               </button>
-              {showExports && <FileBrowser onStatusChange={setStatusWithAutoDismiss} />}
+              {showPalette && (
+                <div className="space-y-2">
+                  {[
+                    { label: "Primary Green", hex: "#009F4A" },
+                    { label: "Lime", hex: "#A4DF1E" },
+                    { label: "Yellow-Green", hex: "#D1E23C" },
+                    { label: "Orange", hex: "#FF9A1F" },
+                    { label: "Deep Orange", hex: "#FF6821" },
+                    { label: "Near Black", hex: "#10100d" },
+                    { label: "White", hex: "#ffffff" },
+                    { label: "Light Gray", hex: "#f5f5f5" },
+                    { label: "Border Gray", hex: "#e0e0e0" },
+                    { label: "Text Secondary", hex: "#666666" },
+                  ].map((c) => (
+                    <button
+                      key={c.hex}
+                      onClick={() => copyToClipboard(c.hex)}
+                      className="flex items-center gap-2 w-full text-left text-xs p-1.5 rounded hover:bg-muted/50 transition-colors group"
+                      title={`Click to copy ${c.hex}`}
+                    >
+                      <div
+                        className="w-5 h-5 rounded border border-gray-200 flex-shrink-0"
+                        style={{ backgroundColor: c.hex }}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <span className="font-medium">{c.label}</span>
+                        <span className="text-muted-foreground ml-1.5 font-mono group-hover:text-green-600 transition-colors">{c.hex}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             <Separator />

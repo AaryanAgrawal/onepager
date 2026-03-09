@@ -28,37 +28,47 @@ git clone https://github.com/AaryanAgrawal/onepager.git
 cd onepager && git pull origin main
 ```
 
-3. Install dependencies and start the dev server in the background:
+3. **Kill any existing dev server** before starting a new one. Only ONE instance should run at a time:
 ```bash
+# Kill any existing Next.js dev servers to avoid port conflicts
+pkill -f "next dev" 2>/dev/null || true
+sleep 1
 cd app && npm install && npm run dev &
 cd ..
 ```
 
 4. Tell the user: "Preview is live at http://localhost:3001 — what would you like to create?"
 
-### 1. Git Sync — Always Current (STRICT)
+**IMPORTANT: Never run multiple dev servers.** Always kill existing ones first. If ports 3000-3001 are occupied, kill the old process — don't let Next.js auto-increment to 3002, 3003, etc.
 
-This project MUST stay synced with GitHub at all times. No exceptions.
+### 1. Git Sync — Push and Pull at EVERY Step (STRICT)
 
-**On session start:** (handled by Auto-Start above)
+This project MUST stay synced with GitHub at all times. No exceptions. Every meaningful change gets committed AND pushed immediately — not batched, not deferred.
 
-**After EVERY document or code change:**
+**On session start:** (handled by Auto-Start above — includes `git pull`)
+
+**After EVERY change (document, code, config, CLAUDE.md, memory):**
 ```bash
 git add documents/ references/ brand/ assets/ memory/ app/src/ CLAUDE.md
 git commit -m "descriptive message in imperative mood"
-```
-
-**Before session end or context switch:**
-```bash
 git push origin main
 ```
 
+This means: write HTML → commit + push. Edit CLAUDE.md → commit + push. Fix spacing → commit + push. **Every step, not just at the end.**
+
+**Before EVERY edit session (if time has passed or context was reset):**
+```bash
+git pull origin main
+```
+
 **Rules:**
-- NEVER leave uncommitted document changes. If you wrote HTML, commit it.
-- NEVER leave unpushed commits. If you committed, push.
-- Commit messages must describe WHAT changed: "Update Farhand page 1 card layout" not "fix stuff"
+- NEVER leave uncommitted changes. If you wrote HTML, commit it immediately.
+- NEVER leave unpushed commits. Every commit gets pushed right away. Not later, not at session end — NOW.
+- NEVER start editing without pulling first. Another session may have pushed changes.
+- Commit messages must describe WHAT changed: "Update Farhand page 2 spacing to fix overflow" not "fix stuff"
 - If git pull has conflicts, resolve them before doing anything else.
-- Only push to `main` branch. Most changes will be in: `documents/`, `references/`, `brand/`, `assets/`, `memory/`
+- Only push to `main` branch. Most changes will be in: `documents/`, `references/`, `brand/`, `assets/`, `memory/`, `app/src/`
+- The cadence is: **pull → edit → check spacing → fix → commit → push → repeat**
 
 ### 2. Self-Improvement — Learn From Every Session (STRICT)
 
@@ -111,12 +121,42 @@ Track what gets requested. If a pattern shows up 2+ times, it's a feature worth 
 2. You read `references/` for style examples (7 Farhand reference images + any HTML files)
 3. You read `brand/logo-w-type-light-base64.txt` for the Farhand logo
 4. You write complete HTML to `app/current.html`
-5. Web app auto-refreshes the preview within 500ms
-6. User reviews in browser, comes back with feedback
-7. You edit `app/current.html` based on their feedback
-8. Repeat until happy, then save to `documents/` folder via sidebar or API
-9. Export as PDF via "Export PDF" button
-10. **Commit and push** — every saved document change gets committed immediately
+5. **Run spacing check** (see below) — fix any overflow or whitespace issues before showing to user
+6. Web app auto-refreshes the preview within 500ms
+7. User reviews in browser, comes back with feedback
+8. You edit `app/current.html` based on their feedback
+9. **Run spacing check again** — every edit must pass before moving on
+10. Repeat until happy, then save to `documents/` folder via sidebar or API
+11. Export as PDF via "Export PDF" button
+12. **Commit and push** — every saved document change gets committed immediately
+
+### Spacing Check — Mandatory After Every HTML Write (STRICT)
+
+After EVERY write or edit to `app/current.html`, you MUST call:
+
+```bash
+curl -s http://localhost:3001/api/check-spacing
+```
+
+This endpoint uses Puppeteer to measure the actual rendered content height of each `.page` div and returns a JSON report.
+
+**Response format:**
+```json
+{
+  "pages": [
+    { "page": 1, "status": "OK", "overflow": 0, "whitespace": 0, "advice": "Page 1 fits well." },
+    { "page": 2, "status": "OVERFLOW", "overflow": 94, "advice": "Page 2 overflows by 94px (~5 lines). Cut content or reduce font/spacing." }
+  ],
+  "summary": "1 page(s) OVERFLOW..."
+}
+```
+
+**Rules:**
+- If ANY page has `status: "OVERFLOW"` — you MUST fix it before showing the result to the user. Reduce padding, font sizes, margins, or cut content until all pages pass.
+- If ANY page has `status: "EXCESS_WHITESPACE"` — consider increasing spacing or adding content to fill the page.
+- If ALL pages have `status: "OK"` — proceed.
+- **Never skip this step.** Overflow = content the user can't see. This is a hard blocker.
+- If the dev server is not running, start it first, then run the check.
 
 ### Documents Directory Workflow
 
@@ -953,6 +993,27 @@ onepager/
 ├── README.md
 └── PRD.md
 ```
+
+## WIREFRAME COMPLIANCE — ZERO DEVIATION (STRICT)
+
+When a `.md` wireframe file exists for a document (e.g., `documents/Marketing Materials/Farhand-wireframe.md`), the wireframe is the **single source of truth**. The HTML output MUST match it exactly. No creative liberty. No "improvements". No deviations.
+
+**Before ANY write or edit to a wireframed document:**
+1. Read the wireframe file
+2. Verify every section, title, stat, description, and layout instruction matches
+3. If you're unsure whether a change breaks compliance — re-read the wireframe
+
+**Rules — non-negotiable:**
+- **Do NOT deviate from the wireframe** — section order, content, layout structure, and copy must match what the wireframe specifies. This includes section titles, body text, stats, descriptions, card content, CTA copy — everything.
+- **Do NOT add sections, cards, stats, or content** that aren't in the wireframe. If the wireframe doesn't mention it, it doesn't go on the page.
+- **Do NOT remove or rearrange sections** unless the wireframe is updated first.
+- **Do NOT paraphrase or reword** wireframe copy. Use the exact wording. "field technician rapidly" stays "field technician rapidly", not "quick field tech dispatch".
+- **Icons specified in the wireframe** — use exactly those Phosphor icon names. Don't substitute.
+- **Layout directions** (e.g., "2 columns", "3-column cards", "full-width bar") — follow precisely.
+- **If the user asks for changes that conflict with the wireframe** — update the wireframe FIRST, then update the HTML to match. Both files must always agree.
+- **If you notice the HTML has drifted from the wireframe** — fix the HTML to match the wireframe, not the other way around (unless the user explicitly says to update the wireframe).
+
+**This rule exists because:** Claude tends to "improve" copy, rearrange sections, or add content that wasn't asked for. For sales documents, every word matters. The wireframe is approved copy. Don't touch it.
 
 ## ANTI-PATTERNS
 

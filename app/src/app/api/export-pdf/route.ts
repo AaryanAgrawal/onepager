@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import puppeteer from "puppeteer";
 import { writeFileSync, readFileSync, mkdirSync, existsSync } from "fs";
 import path from "path";
+import { resolveAssetsBase64 } from "@/lib/asset-resolver";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +14,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No working file (current.html)" }, { status: 404 });
     }
 
-    const html = readFileSync(currentPath, "utf-8");
+    // Resolve /api/assets/serve/ URLs to base64 for self-contained PDF
+    const rawHtml = readFileSync(currentPath, "utf-8");
+    const html = resolveAssetsBase64(rawHtml);
 
     const safeName = filename.replace(/[^a-zA-Z0-9 ._-]/g, "");
     const timestamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);

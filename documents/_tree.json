@@ -2,35 +2,25 @@
   "version": 1,
   "root": [
     {
-      "name": "Client Communication",
+      "name": "Client Comms",
       "type": "folder",
       "children": []
     },
     {
-      "name": "Company Materials",
+      "name": "Marketing Materials",
       "type": "folder",
       "children": [
         {
-          "name": "Field",
-          "type": "folder",
-          "children": [
-            {
-              "name": "Farhand",
-              "type": "document",
-              "path": "Company Materials/Field/Farhand.html",
-              "pageCount": 3
-            }
-          ]
+          "name": "Farhand",
+          "type": "document",
+          "path": "Marketing Materials/Farhand.html",
+          "pageCount": 3
         },
         {
-          "name": "Data",
-          "type": "folder",
-          "children": []
-        },
-        {
-          "name": "Teleop",
-          "type": "folder",
-          "children": []
+          "name": "Farhand x Robotic Crew",
+          "type": "document",
+          "path": "Marketing Materials/Farhand x Robotic Crew.html",
+          "pageCount": 4
         }
       ]
     }
