@@ -287,7 +287,7 @@ body { width: 8.5in; margin: 0 auto; font-family: 'DM Sans', sans-serif; color: 
   <div style="padding:36px 40px 0;">
     <h2 style="font-size:18px; font-weight:600; padding-left:12px; border-left:4px solid #009F4A; margin-bottom:6px;">How a Ticket Flows</h2>
     <div style="text-align:center; padding:2px 0;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 100" style="width:100%; max-width:580px; font-family:'DM Sans',sans-serif;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 110" style="width:100%; font-family:'DM Sans',sans-serif;">
         <defs>
           <marker id="tf-arr" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto" markerUnits="strokeWidth">
             <polygon points="0 0, 6 2.5, 0 5" fill="#bbb"/>
@@ -296,57 +296,47 @@ body { width: 8.5in; margin: 0 auto; font-family: 'DM Sans', sans-serif; color: 
             <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#000" flood-opacity="0.08"/>
           </filter>
         </defs>
-
+      
         <!-- === BOXES === -->
-
+      
         <!-- Detected -->
-        <rect x="10" y="10" width="100" height="42" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5" filter="url(#tf-shadow)"/>
-        <text x="60" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#10100d">Detected</text>
-        <text x="60" y="40" text-anchor="middle" font-size="8" font-weight="400" fill="#666">by remote team or end-user</text>
-
+        <rect x="10" y="8" width="120" height="48" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5" filter="url(#tf-shadow)"/>
+        <text x="70.0" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Detected</text>
+        <text x="70.0" y="44" text-anchor="middle" font-size="9" font-weight="400" fill="#666">by remote team or end-user</text>
+      
         <!-- Triaged -->
-        <rect x="128" y="10" width="100" height="42" rx="10" fill="#e8f5ee" stroke="#009F4A" stroke-width="1.5" filter="url(#tf-shadow)"/>
-        <text x="178" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#10100d">Triaged</text>
-        <text x="178" y="40" text-anchor="middle" font-size="8" font-weight="400" fill="#666">by technical remote team</text>
-
+        <rect x="155" y="8" width="120" height="48" rx="10" fill="#e8f5ee" stroke="#009F4A" stroke-width="1.5" filter="url(#tf-shadow)"/>
+        <text x="215.0" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Triaged</text>
+        <text x="215.0" y="44" text-anchor="middle" font-size="9" font-weight="400" fill="#666">by technical remote team</text>
+      
         <!-- Escalated -->
-        <rect x="246" y="10" width="100" height="42" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5" filter="url(#tf-shadow)"/>
-        <text x="296" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#10100d">Escalated</text>
-        <text x="296" y="40" text-anchor="middle" font-size="8" font-weight="400" fill="#666">to your engineering team</text>
-
+        <rect x="300" y="8" width="120" height="48" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5" filter="url(#tf-shadow)"/>
+        <text x="360.0" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Escalated</text>
+        <text x="360.0" y="44" text-anchor="middle" font-size="9" font-weight="400" fill="#666">to your engineering team</text>
+      
         <!-- Dispatched -->
-        <rect x="364" y="10" width="100" height="42" rx="10" fill="#e8f5ee" stroke="#009F4A" stroke-width="1.5" filter="url(#tf-shadow)"/>
-        <text x="414" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#10100d">Dispatched</text>
-        <text x="414" y="40" text-anchor="middle" font-size="8" font-weight="400" fill="#666">field technician rapidly</text>
-
+        <rect x="445" y="8" width="120" height="48" rx="10" fill="#e8f5ee" stroke="#009F4A" stroke-width="1.5" filter="url(#tf-shadow)"/>
+        <text x="505.0" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Dispatched</text>
+        <text x="505.0" y="44" text-anchor="middle" font-size="9" font-weight="400" fill="#666">field technician rapidly</text>
+      
         <!-- Resolved -->
-        <rect x="482" y="10" width="100" height="42" rx="10" fill="#e6ffe8" stroke="#33ee69" stroke-width="1.5" filter="url(#tf-shadow)"/>
-        <text x="532" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#10100d">Resolved</text>
-        <text x="532" y="40" text-anchor="middle" font-size="8" font-weight="400" fill="#666">and documented</text>
-
-        <!-- === MAIN FLOW ARROWS (horizontal between boxes) === -->
-
-        <!-- Detected -> Triaged -->
-        <line x1="110" y1="31" x2="126" y2="31" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
-
-        <!-- Triaged -> Escalated -->
-        <line x1="228" y1="31" x2="244" y2="31" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
-
-        <!-- Escalated -> Dispatched -->
-        <line x1="346" y1="31" x2="362" y2="31" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
-
-        <!-- Dispatched -> Resolved -->
-        <line x1="464" y1="31" x2="480" y2="31" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
-
-        <!-- === SHORTCUT ARROWS (curving below the row) === -->
-
-        <!-- Shortcut 1: Triaged -> Resolved (deeper curve, remote team fixes it) -->
-        <!-- Starts at bottom-center of Triaged (178,52), curves down to y~82, ends at bottom-center of Resolved (532,52) -->
-        <path d="M 178 52 C 178 88, 532 88, 532 52" fill="none" stroke="#bbb" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#tf-arr)"/>
-
-        <!-- Shortcut 2: Escalated -> Resolved (shallower curve, eng team resolves) -->
-        <!-- Starts at bottom-center of Escalated (296,52), curves down to y~72, ends at bottom-center of Resolved (532,52) -->
-        <path d="M 296 52 C 296 76, 532 76, 532 52" fill="none" stroke="#bbb" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#tf-arr)"/>
+        <rect x="590" y="8" width="120" height="48" rx="10" fill="#e6ffe8" stroke="#33ee69" stroke-width="1.5" filter="url(#tf-shadow)"/>
+        <text x="650.0" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Resolved</text>
+        <text x="650.0" y="44" text-anchor="middle" font-size="9" font-weight="400" fill="#666">and documented</text>
+      
+        <!-- === MAIN FLOW ARROWS === -->
+        <line x1="130" y1="32.0" x2="155" y2="32.0" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
+        <line x1="275" y1="32.0" x2="300" y2="32.0" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
+        <line x1="420" y1="32.0" x2="445" y2="32.0" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
+        <line x1="565" y1="32.0" x2="590" y2="32.0" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
+      
+        <!-- === SHORTCUT ARROWS (90-degree bends) === -->
+      
+        <!-- Shortcut: Triaged -> Resolved (deeper track) -->
+        <path d="M 215.0 56 L 215.0 94 L 650.0 94 L 650.0 56" fill="none" stroke="#bbb" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#tf-arr)"/>
+      
+        <!-- Shortcut: Escalated -> Resolved (shallower track) -->
+        <path d="M 360.0 56 L 360.0 78 L 650.0 78 L 650.0 56" fill="none" stroke="#bbb" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#tf-arr)"/>
       </svg>
     </div>
   </div>
