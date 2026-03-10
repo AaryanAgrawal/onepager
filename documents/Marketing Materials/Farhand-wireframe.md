@@ -8,7 +8,7 @@
 
 **Partnership**: Farhand × Robotic Crew. Both logos on every page.
 
-- **Robotic Crew** — remote: fleet monitoring, teleoperation, L1–L3 troubleshooting. Nearshore operators from Latin America. Platform-agnostic.
+- **Robotic Crew** — remote: fleet monitoring, teleoperation, L1–L3 troubleshooting. Nearshore operators from Latin America.
 - **Farhand** — field: on-site installation, maintenance, break/fix repair. AI-guided techs through Field Nation's nationwide network.
 
 Together: full-stack robot operations support, remote + field.
@@ -51,11 +51,11 @@ Your robots need people behind them — remote operators watching the fleet, and
 
 **Remote Support** `[icon: headset, farhand-green]`:
 - 24/7 fleet monitoring & teleoperation
-- L1–L3 remote troubleshooting via AWS, robot dashboards, and live feeds
+- L1/L2 remote troubleshooting
 - Escalation to field when remote can't resolve
 
 **Field Service** `[icon: wrench, farhand-green]`:
-- Deployment, commissioning & end-user training
+- On-site installation & user training
 - Break/fix repair, preventative maintenance
 - Vetted and certified on your robot
 
@@ -167,12 +167,12 @@ Bottom row: **Field Tech** --solid (reports to)--> **Your Engineers**
 - Labels above each connector segment in `gray-text`
 
 ### Capabilities (2×3 grid, icon + title + one line each) `[icons: orange-accent]`
-1. `[icon: file-text]` **SOPs & Training Materials** — Upload your docs → we create visual SOPs, training guides, and customer-facing materials
+1. `[icon: file-text]` **AI-generated SOPs** — Upload your messy docs & create visual SOPs and customer training materials
 2. `[icon: desktop]` **Autonomous diagnostics** — Our agent SSHs into your robot, finds issues, reads logs, and troubleshoots
 3. `[icon: headset]` **Contextual escalation** — Remote to field to your engineering team, each handoff carries full context and logs
 4. `[icon: scroll]` **Service report generation** — Every interaction documented for every job
-5. `[icon: plugs-connected]` **Integrates with your tools** — Slack, WhatsApp, Jira, Formant, InOrbit, Salesforce, and others
-6. `[icon: eye]` **Closed-loop learning** — Every field interaction feeds structured data back — failure patterns, fix rates, and field insights that make your robot better over time
+5. `[icon: plugs-connected]` **Integrates with your tools** — WhatsApp, Teams, Slack, Jira, Formant, InOrbit, Salesforce, and others
+6. `[icon: eye]` **Closed-loop learning** — Every issue our techs encounter feeds back into the platform, improving diagnostics and SOPs over time
 
 ### Data & Security (dark card, bottom-anchored) `[icon: shield-check, farhand-green]`
 Green "Data & Security" tag + shield icon. One AI agent per customer. Hosted on our servers. No data leaked to LLM providers. No cross-org data or models.
