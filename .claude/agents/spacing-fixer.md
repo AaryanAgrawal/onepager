@@ -19,9 +19,12 @@ curl -s http://localhost:3001/api/check-spacing
 ```
 
 2. Read the JSON response. Each page has:
-   - `status`: "OK", "OVERFLOW", or "EXCESS_WHITESPACE"
+   - `status`: "OK", "OVERFLOW", "EXCESS_WHITESPACE", or "UNEVEN_SPACING"
    - `overflow`: pixels of content exceeding the page boundary
    - `whitespace`: unused pixels at page bottom
+   - `gaps`: array of pixel gaps between consecutive direct children of the `.page` div
+   - `maxGap`: largest gap in the array
+   - `avgGap`: average gap across all sections
    - `advice`: human-readable suggestion
 
 3. If ALL pages are "OK" → report success and stop.
@@ -63,9 +66,17 @@ curl -s http://localhost:3001/api/check-spacing
 3. **Grid gaps** — increase gap values
 4. **Font sizes / line height** — scale up if there's room
 
-### For pages using `margin-top: auto`:
+### For UNEVEN_SPACING — equalize in this order:
 
-The API measures `scrollHeight` which doesn't account for visual gaps created by `margin-top: auto`. A page may report "OK" but have visible empty space between content and the auto-pushed footer. This is expected behavior — don't "fix" it unless the user specifically asks.
+The API detects uneven spacing when `maxGap > 60px` AND `maxGap > 2.5 × avgGap`. This means one gap between sections is disproportionately large compared to the others.
+
+1. **Identify the largest gap** — check the `gaps` array and `advice` field to find which sections have the big gap between them.
+2. **Reduce the large gap** — decrease `padding-top` or `margin-top` on the section below the gap. Cut by 8-16px at a time.
+3. **Increase small gaps** — add `padding-top` to sections with smaller-than-average gaps to spread content more evenly.
+4. **Target**: all gaps should be within 2x of each other (no single gap dominating).
+5. UNEVEN_SPACING is a **blocking** status — must fix before proceeding, same as OVERFLOW.
+
+**IMPORTANT**: `margin-top: auto` is banned on elements inside `.page` divs. If you find any, replace with explicit padding/margins. This CSS pattern hides whitespace from the spacing API.
 
 ## EDITING RULES
 

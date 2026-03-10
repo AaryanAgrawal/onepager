@@ -12,6 +12,9 @@
  *       contentHeight: 1120,
  *       overflow: 64,
  *       whitespace: 0,
+ *       gaps: [12, 18, 94],
+ *       maxGap: 94,
+ *       avgGap: 41,
  *       status: "OVERFLOW",
  *       advice: "Page 1 overflows by 64px (~3 lines). Cut content or reduce font sizes."
  *     },
@@ -29,6 +32,8 @@ import { resolveAssetsBase64 } from "@/lib/asset-resolver";
 const PAGE_HEIGHT_PX = 1056; // 11in at 96dpi
 const OVERFLOW_THRESHOLD = 5; // px — ignore sub-5px rounding
 const WHITESPACE_WARN = 150; // px — ~14% of page, warn if more empty space than this
+const GAP_THRESHOLD = 60; // px — flag if any inter-section gap exceeds this
+const GAP_RATIO = 2.5; // flag if max gap > GAP_RATIO × average gap
 
 interface PageMeasurement {
   page: number;
@@ -36,7 +41,10 @@ interface PageMeasurement {
   contentHeight: number;
   overflow: number;
   whitespace: number;
-  status: "OK" | "OVERFLOW" | "EXCESS_WHITESPACE";
+  gaps: number[];
+  maxGap: number;
+  avgGap: number;
+  status: "OK" | "OVERFLOW" | "EXCESS_WHITESPACE" | "UNEVEN_SPACING";
   advice: string;
 }
 
@@ -101,12 +109,41 @@ export async function GET() {
         // Use the larger of scrollHeight and lastChildBottom for accuracy
         const contentHeight = Math.max(scrollHeight, Math.ceil(lastChildBottom));
 
+        // Measure visual spacing between sections
+        // Sections use padding-top for spacing (not margin), so bounding box gaps are 0.
+        // We measure each child's paddingTop as the visual gap above it.
+        // We also measure margin-top + bounding box gap to catch both patterns.
+        const gaps: number[] = [];
+        if (children.length > 0) {
+          for (let j = 0; j < children.length; j++) {
+            const child = children[j] as HTMLElement;
+            const style = window.getComputedStyle(child);
+            const paddingTop = parseFloat(style.paddingTop) || 0;
+            const marginTop = parseFloat(style.marginTop) || 0;
+            // For the first child, report its padding-top as-is
+            // For subsequent children, also add any bounding box gap
+            let visualGap = paddingTop + marginTop;
+            if (j > 0) {
+              const prevRect = (children[j - 1] as HTMLElement).getBoundingClientRect();
+              const currRect = child.getBoundingClientRect();
+              const boxGap = Math.round(currRect.top - prevRect.bottom);
+              if (boxGap > 0) visualGap += boxGap;
+            }
+            gaps.push(Math.round(visualGap));
+          }
+        }
+        const maxGap = gaps.length > 0 ? Math.max(...gaps) : 0;
+        const avgGap = gaps.length > 0 ? Math.round(gaps.reduce((a, b) => a + b, 0) / gaps.length) : 0;
+
         return {
           page: i + 1,
           containerHeight,
           contentHeight,
           scrollHeight,
           lastChildBottom: Math.ceil(lastChildBottom),
+          gaps,
+          maxGap,
+          avgGap,
         };
       });
     });
@@ -125,6 +162,10 @@ export async function GET() {
         status = "OVERFLOW";
         const lines = Math.ceil(overflow / 20); // ~20px per line
         advice = `Page ${m.page} overflows by ${overflow}px (~${lines} lines). Cut content or reduce font/spacing.`;
+      } else if (m.maxGap > GAP_THRESHOLD && m.avgGap > 0 && m.maxGap > m.avgGap * GAP_RATIO) {
+        status = "UNEVEN_SPACING";
+        const maxGapIndex = m.gaps.indexOf(m.maxGap);
+        advice = `Page ${m.page} has uneven section spacing (max gap: ${m.maxGap}px between sections ${maxGapIndex + 1} and ${maxGapIndex + 2}, avg: ${m.avgGap}px). Redistribute padding to equalize.`;
       } else if (whitespace > WHITESPACE_WARN) {
         status = "EXCESS_WHITESPACE";
         const pct = Math.round((whitespace / m.containerHeight) * 100);
@@ -139,12 +180,16 @@ export async function GET() {
         contentHeight: m.contentHeight,
         overflow,
         whitespace,
+        gaps: m.gaps,
+        maxGap: m.maxGap,
+        avgGap: m.avgGap,
         status,
         advice,
       };
     });
 
     const overflowCount = pages.filter((p) => p.status === "OVERFLOW").length;
+    const unevenCount = pages.filter((p) => p.status === "UNEVEN_SPACING").length;
     const whitespaceCount = pages.filter(
       (p) => p.status === "EXCESS_WHITESPACE"
     ).length;
@@ -154,6 +199,8 @@ export async function GET() {
     const parts: string[] = [];
     if (overflowCount > 0)
       parts.push(`${overflowCount} page(s) OVERFLOW — content needs to be cut or downsized`);
+    if (unevenCount > 0)
+      parts.push(`${unevenCount} page(s) have UNEVEN_SPACING — redistribute section gaps`);
     if (whitespaceCount > 0)
       parts.push(`${whitespaceCount} page(s) have excess whitespace`);
     if (okCount > 0) parts.push(`${okCount} page(s) fit well`);
