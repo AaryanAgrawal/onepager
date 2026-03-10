@@ -1,55 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 190" font-family="'DM Sans', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 155" font-family="'DM Sans', sans-serif">
   <defs>
-    <marker id="tf-arr" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="strokeWidth">
-      <polygon points="0 0, 9 4, 0 8" fill="#33ee69"/>
+    <marker id="tf-arr" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 6 2.5, 0 5" fill="#bbb"/>
     </marker>
     <filter id="tf-shadow" x="-10%" y="-10%" width="130%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.06"/>
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.05"/>
     </filter>
   </defs>
+  <!-- Connectors — grey arrows -->
+  <path d="M 152 36 L 200 36" fill="none" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
+  <path d="M 370 36 L 420 36" fill="none" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
+  <!-- Diagnosed → Dispatched: 90° bend down then right -->
+  <path d="M 330 56 L 330 82 Q 330 90 338 90 L 360 90" fill="none" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
+  <!-- Dispatched → Resolved: L-shape right then up -->
+  <path d="M 510 90 L 540 90 Q 548 90 548 82 L 548 56" fill="none" stroke="#bbb" stroke-width="1.8" marker-end="url(#tf-arr)"/>
 
-  <!-- ==================== CONNECTORS (behind nodes) ==================== -->
-
-  <!-- Arrow 1: Detected → Diagnosed -->
-  <path d="M 160 40 L 210 40" fill="none" stroke="#33ee69" stroke-width="2.5" marker-end="url(#tf-arr)"/>
-
-  <!-- Arrow 2: Diagnosed → Resolved -->
-  <path d="M 390 40 L 440 40" fill="none" stroke="#33ee69" stroke-width="2.5" marker-end="url(#tf-arr)"/>
-
-  <!-- Arrow 3: Diagnosed → Dispatched (vertical down from right edge of Diagnosed area) -->
-  <path d="M 340 66 L 340 114" fill="none" stroke="#33ee69" stroke-width="2.5" marker-end="url(#tf-arr)"/>
-
-  <!-- Arrow 4: Dispatched → Resolved (L-shape: right then up) -->
-  <path d="M 470 140 L 525 140 Q 533 140 533 132 L 533 66" fill="none" stroke="#33ee69" stroke-width="2.5" marker-end="url(#tf-arr)"/>
-
-  <!-- ==================== NODES ==================== -->
-
-  <!-- Node 1: Detected -->
+  <!-- Node 1: Detected (orange) -->
   <g filter="url(#tf-shadow)">
-    <rect x="8" y="14" width="152" height="52" rx="10" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="6" y="12" width="146" height="48" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5"/>
   </g>
-  <text x="84" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#10100d">Detected</text>
-  <text x="84" y="52" text-anchor="middle" font-size="10" font-weight="400" fill="#666">by remote team or end-user</text>
+  <text x="79" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Detected</text>
+  <text x="79" y="47" text-anchor="middle" font-size="9" font-weight="400" fill="#666">by remote team or end-user</text>
 
-  <!-- Node 2: Diagnosed -->
+  <!-- Node 2: Diagnosed (yellow) -->
   <g filter="url(#tf-shadow)">
-    <rect x="220" y="14" width="170" height="52" rx="10" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="210" y="12" width="160" height="48" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5"/>
   </g>
-  <text x="305" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#10100d">Diagnosed</text>
-  <text x="305" y="52" text-anchor="middle" font-size="10" font-weight="400" fill="#666">by technical remote support</text>
+  <text x="290" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Diagnosed</text>
+  <text x="290" y="47" text-anchor="middle" font-size="9" font-weight="400" fill="#666">by technical remote support</text>
 
-  <!-- Node 3: Resolved -->
+  <!-- Node 3: Resolved (green) -->
   <g filter="url(#tf-shadow)">
-    <rect x="450" y="14" width="160" height="52" rx="10" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="430" y="12" width="150" height="48" rx="10" fill="#ECFDF5" stroke="#009F4A" stroke-width="1.5"/>
   </g>
-  <text x="530" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#10100d">Resolved</text>
-  <text x="530" y="52" text-anchor="middle" font-size="10" font-weight="400" fill="#666">and documented</text>
+  <text x="505" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Resolved</text>
+  <text x="505" y="47" text-anchor="middle" font-size="9" font-weight="400" fill="#666">and documented</text>
 
-  <!-- Node 4: Dispatched (centered between Diagnosed and Resolved) -->
-  <!-- Diagnosed right edge=390, Resolved left edge=450, midpoint=420 -->
+  <!-- Node 4: Dispatched (yellow-green) -->
   <g filter="url(#tf-shadow)">
-    <rect x="330" y="114" width="180" height="52" rx="10" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="370" y="70" width="140" height="42" rx="10" fill="#F0FFF4" stroke="#33ee69" stroke-width="1.5"/>
   </g>
-  <text x="420" y="135" text-anchor="middle" font-size="13" font-weight="700" fill="#10100d">Dispatched</text>
-  <text x="420" y="152" text-anchor="middle" font-size="10" font-weight="400" fill="#666">field technician rapidly</text>
+  <text x="440" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#10100d">Dispatched</text>
+  <text x="440" y="102" text-anchor="middle" font-size="9" font-weight="400" fill="#666">field technician rapidly</text>
 </svg>

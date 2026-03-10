@@ -1,39 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 185" font-family="'DM Sans', sans-serif">
   <defs>
-    <!-- Smaller arrow -->
     <marker id="rw-arr" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
       <polygon points="0 0, 7 3, 0 6" fill="#33ee69"/>
     </marker>
-    <!-- Bright glow for Relay -->
+    <marker id="rw-arr-orange" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 7 3, 0 6" fill="#FF6821"/>
+    </marker>
     <filter id="rw-glow" x="-60%" y="-60%" width="220%" height="220%">
       <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#33ee69" flood-opacity="0.7"/>
     </filter>
-    <!-- Blue glow for Your Robot -->
     <filter id="rw-glow-light" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#4B7BE5" flood-opacity="0.35"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#EAB308" flood-opacity="0.35"/>
     </filter>
-    <!-- Node shadow -->
     <filter id="rw-shadow" x="-10%" y="-10%" width="130%" height="140%">
       <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.06"/>
     </filter>
   </defs>
 
-  <!-- ===== CONNECTORS ===== -->
-  <line x1="120" y1="52" x2="210" y2="52" stroke="#33ee69" stroke-width="2" stroke-dasharray="5,3"/>
-  <line x1="280" y1="52" x2="350" y2="52" stroke="#33ee69" stroke-width="2"/>
+  <!-- Connectors -->
+  <line x1="120" y1="52" x2="210" y2="52" stroke="#33ee69" stroke-width="2.5" stroke-dasharray="5,3"/>
+  <line x1="275" y1="52" x2="350" y2="52" stroke="#33ee69" stroke-width="2.5"/>
   <text x="315" y="43" font-size="9" fill="#999" text-anchor="middle">diagnose</text>
-  <line x1="580" y1="52" x2="478" y2="52" stroke="#33ee69" stroke-width="2" marker-end="url(#rw-arr)"/>
-  <path d="M 245,82 L 245,112 Q 245,120 237,120 L 220,120" stroke="#33ee69" stroke-width="2" fill="none"/>
-  <text x="228" y="106" font-size="9" fill="#999" text-anchor="end">dispatch</text>
-  <path d="M 245,82 L 245,150 Q 245,158 253,158 L 300,158" stroke="#33ee69" stroke-width="2" fill="none"/>
-  <text x="270" y="144" font-size="9" fill="#999" text-anchor="start">escalate</text>
+  <line x1="580" y1="52" x2="478" y2="52" stroke="#FF6821" stroke-width="2.5" marker-end="url(#rw-arr-orange)"/>
+  <path d="M 245,82 L 245,112 Q 245,120 237,120 L 220,120" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+  <text x="218" y="100" font-size="9" fill="#999" text-anchor="end">dispatch</text>
+  <path d="M 245,82 L 245,150 Q 245,158 253,158 L 300,158" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+  <text x="262" y="138" font-size="9" fill="#999" text-anchor="end">escalate</text>
 
-  <!-- ===== NODES ===== -->
-  <!-- Your Robot (client blue) -->
+  <!-- Your Robot (yellow) -->
   <g filter="url(#rw-glow-light)">
-    <rect x="10" y="34" width="110" height="36" rx="10" fill="#EEF4FF" stroke="#4B7BE5" stroke-width="1.5"/>
+    <rect x="10" y="34" width="110" height="36" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5"/>
   </g>
-  <text x="65" y="57" font-size="12" font-weight="700" fill="#4B7BE5" text-anchor="middle">Your Robot</text>
+  <text x="65" y="57" font-size="12" font-weight="700" fill="#10100d" text-anchor="middle">Your Robot</text>
 
   <!-- Relay hub -->
   <g filter="url(#rw-glow)">
@@ -64,9 +62,9 @@
   </g>
   <text x="165" y="127" font-size="12" font-weight="700" fill="#10100d" text-anchor="middle">Field Tech</text>
 
-  <!-- Your Engineers (client blue) -->
+  <!-- Your Engineers (yellow) -->
   <g filter="url(#rw-shadow)">
-    <rect x="300" y="140" width="130" height="36" rx="10" fill="#EEF4FF" stroke="#4B7BE5" stroke-width="1.5"/>
+    <rect x="300" y="140" width="130" height="36" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5"/>
   </g>
-  <text x="365" y="163" font-size="12" font-weight="700" fill="#4B7BE5" text-anchor="middle">Your Engineers</text>
+  <text x="365" y="163" font-size="12" font-weight="700" fill="#10100d" text-anchor="middle">Your Engineers</text>
 </svg>
