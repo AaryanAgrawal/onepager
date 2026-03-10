@@ -60,7 +60,7 @@ Your robots need people behind them — remote operators watching the fleet, and
 - Vetted and certified on your robot
 
 **AI Platform** (full-width bar spanning both columns) `[icon: sparkle, farhand-green]`:
-- Trains on your docs to create SOPs and answer questions
+- Understands your docs to create SOPs and answer questions
 - Automated SSH diagnostics and log analysis on your robots
 - Logs every interaction so your R&D team can learn from the field
 
@@ -129,9 +129,9 @@ Three paths to resolution:
 2. **Detected** → **Triaged** → **Escalated** → **Resolved** (your engineering team resolves)
 3. **Detected** → **Triaged** → **Escalated** → **Dispatched** → **Resolved** (field tech sent on-site)
 
-Box colors:
-- Detected: `orange` — issue originates from end-user or monitoring
-- Triaged: `farhand-green` — our remote team assesses
+Box colors (red → green progression):
+- Detected: `red` (#EF4444) — problem identified
+- Triaged: `orange` — being assessed by our remote team
 - Escalated: `client-yellow` — your engineering team involved
 - Dispatched: `farhand-green` — our field tech deployed
 - Resolved & Documented: `bright-green` — closed and logged
@@ -181,7 +181,7 @@ Bottom row: **Field Tech** --solid (reports to)--> **Your Engineers**
 2. `[icon: desktop]` **Autonomous diagnostics** — Our agent SSHs into your robot, finds issues, reads logs, and troubleshoots
 3. `[icon: headset]` **Contextual escalation** — Remote to field to your engineering team, each handoff carries full context and logs
 4. `[icon: scroll]` **Service report generation** — Every interaction documented for every job
-5. `[icon: plugs-connected]` **Integrates with your tools** — WhatsApp, Teams, Slack, Jira, Formant, InOrbit, Salesforce, and others
+5. `[icon: plugs-connected]` **Integrates with your tools** — AWS CloudWatch, Communication channels, CRMs, & 
 6. `[icon: eye]` **Closed-loop learning** — Every issue our techs encounter feeds back into the platform, improving diagnostics and SOPs over time
 
 ### Data & Security (dark card, bottom-anchored) `[icon: shield-check, farhand-green]`
