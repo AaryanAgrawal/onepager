@@ -1,87 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 736 230" font-family="'DM Sans', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 185" font-family="'DM Sans', sans-serif">
   <defs>
-    <!-- Arrow: right-pointing, used on Customer→Remote line -->
-    <marker id="rw-arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
-      <polygon points="0 0, 10 4, 0 8" fill="#33ee69"/>
+    <!-- Smaller arrow -->
+    <marker id="rw-arr" markerWidth="7" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 7 3, 0 6" fill="#33ee69"/>
     </marker>
-
-    <!-- Green glow for RELAY -->
-    <filter id="rw-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#33ee69" flood-opacity="0.45"/>
+    <!-- Bright glow for Relay -->
+    <filter id="rw-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feDropShadow dx="0" dy="0" stdDeviation="14" flood-color="#33ee69" flood-opacity="0.7"/>
     </filter>
-
-    <!-- Lighter green glow for Your Robot -->
+    <!-- Blue glow for Your Robot -->
     <filter id="rw-glow-light" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#33ee69" flood-opacity="0.4"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#4B7BE5" flood-opacity="0.35"/>
     </filter>
-
-    <!-- Subtle shadow for rect nodes -->
+    <!-- Node shadow -->
     <filter id="rw-shadow" x="-10%" y="-10%" width="130%" height="140%">
       <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.06"/>
     </filter>
   </defs>
 
-  <!-- ==================== CONNECTORS ==================== -->
+  <!-- ===== CONNECTORS ===== -->
+  <line x1="120" y1="52" x2="210" y2="52" stroke="#33ee69" stroke-width="2" stroke-dasharray="5,3"/>
+  <line x1="280" y1="52" x2="350" y2="52" stroke="#33ee69" stroke-width="2"/>
+  <text x="315" y="43" font-size="9" fill="#999" text-anchor="middle">diagnose</text>
+  <line x1="580" y1="52" x2="478" y2="52" stroke="#33ee69" stroke-width="2" marker-end="url(#rw-arr)"/>
+  <path d="M 245,82 L 245,112 Q 245,120 237,120 L 220,120" stroke="#33ee69" stroke-width="2" fill="none"/>
+  <text x="228" y="106" font-size="9" fill="#999" text-anchor="end">dispatch</text>
+  <path d="M 245,82 L 245,150 Q 245,158 253,158 L 300,158" stroke="#33ee69" stroke-width="2" fill="none"/>
+  <text x="270" y="144" font-size="9" fill="#999" text-anchor="start">escalate</text>
 
-  <!-- 1. Your Robot ··· RELAY: dotted line, NO arrow -->
-  <line x1="140" y1="65" x2="245" y2="65" stroke="#33ee69" stroke-width="2.5" stroke-dasharray="6,4"/>
-
-  <!-- 2. RELAY — Remote Support: solid line, NO arrow, label "diagnose" -->
-  <line x1="315" y1="65" x2="400" y2="65" stroke="#33ee69" stroke-width="2.5"/>
-  <text x="358" y="53" font-size="12" fill="#666" text-anchor="middle">diagnose</text>
-
-  <!-- 3. Customer → Remote Support: arrow pointing toward Remote -->
-  <line x1="660" y1="65" x2="540" y2="65" stroke="#33ee69" stroke-width="2.5" marker-end="url(#rw-arr)"/>
-
-  <!-- 4. RELAY — Field Tech: L-bend down-left, NO arrow, label "dispatch" -->
-  <path d="M 280,100 L 280,145 Q 280,153 272,153 L 260,153" stroke="#33ee69" stroke-width="2.5" fill="none"/>
-  <text x="256" y="135" font-size="12" fill="#666" text-anchor="end">dispatch</text>
-
-  <!-- 5. RELAY — Your Engineers: L-bend down-right, NO arrow, label "escalate" -->
-  <path d="M 280,100 L 280,185 Q 280,193 288,193 L 345,193" stroke="#33ee69" stroke-width="2.5" fill="none"/>
-  <text x="310" y="178" font-size="12" fill="#666" text-anchor="start">escalate</text>
-
-  <!-- ==================== NODES ==================== -->
-
-  <!-- Your Robot: green glow -->
+  <!-- ===== NODES ===== -->
+  <!-- Your Robot (client blue) -->
   <g filter="url(#rw-glow-light)">
-    <rect x="20" y="45" width="120" height="40" rx="12" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="10" y="34" width="110" height="36" rx="10" fill="#EEF4FF" stroke="#4B7BE5" stroke-width="1.5"/>
   </g>
-  <text x="80" y="71" font-size="14" font-weight="700" fill="#10100d" text-anchor="middle">Your Robot</text>
+  <text x="65" y="57" font-size="12" font-weight="700" fill="#4B7BE5" text-anchor="middle">Your Robot</text>
 
-  <!-- RELAY: lighter green circle with dark text + filled sparkle icon -->
+  <!-- Relay hub -->
   <g filter="url(#rw-glow)">
-    <circle cx="280" cy="65" r="35" fill="#33ee69"/>
+    <circle cx="245" cy="52" r="30" fill="#33ee69"/>
   </g>
-  <!-- Filled sparkle icon 12px, above RELAY text -->
-  <g transform="translate(274, 44)">
-    <svg width="12" height="12" viewBox="0 0 256 256" fill="#10100d">
+  <g transform="translate(237, 34)">
+    <svg width="16" height="16" viewBox="0 0 256 256" fill="#10100d">
       <path d="M208,144a15.78,15.78,0,0,1-10.42,14.94l-51.65,19-19,51.61a15.92,15.92,0,0,1-29.88,0L78.07,178l-51.65-19a15.92,15.92,0,0,1,0-29.88l51.65-19,19-51.65a15.92,15.92,0,0,1,29.88,0l19,51.65,51.61,19A15.78,15.78,0,0,1,208,144ZM152,48h16V64a8,8,0,0,0,16,0V48h16a8,8,0,0,0,0-16H184V16a8,8,0,0,0-16,0V32H152a8,8,0,0,0,0,16Zm88,32h-8V72a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0V96h8a8,8,0,0,0,0-16Z"/>
     </svg>
   </g>
-  <text x="280" y="78" font-size="13" font-weight="700" fill="#10100d" text-anchor="middle">RELAY</text>
+  <text x="245" y="66" font-size="12" font-weight="700" fill="#10100d" text-anchor="middle">Relay</text>
 
   <!-- Remote Support -->
   <g filter="url(#rw-shadow)">
-    <rect x="400" y="45" width="140" height="40" rx="12" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="350" y="34" width="128" height="36" rx="10" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
   </g>
-  <text x="470" y="71" font-size="14" font-weight="700" fill="#10100d" text-anchor="middle">Remote Support</text>
+  <text x="414" y="57" font-size="12" font-weight="700" fill="#10100d" text-anchor="middle">Remote Support</text>
 
-  <!-- Customer -->
+  <!-- Customer (orange) -->
   <g filter="url(#rw-shadow)">
-    <rect x="600" y="45" width="120" height="40" rx="12" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="530" y="34" width="100" height="36" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5"/>
   </g>
-  <text x="660" y="71" font-size="14" font-weight="700" fill="#10100d" text-anchor="middle">Customer</text>
+  <text x="580" y="57" font-size="12" font-weight="700" fill="#FF6821" text-anchor="middle">Customer</text>
 
-  <!-- Field Tech (below-left of RELAY) -->
+  <!-- Field Tech -->
   <g filter="url(#rw-shadow)">
-    <rect x="140" y="133" width="120" height="40" rx="12" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="110" y="104" width="110" height="36" rx="10" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
   </g>
-  <text x="200" y="159" font-size="14" font-weight="700" fill="#10100d" text-anchor="middle">Field Tech</text>
+  <text x="165" y="127" font-size="12" font-weight="700" fill="#10100d" text-anchor="middle">Field Tech</text>
 
-  <!-- Your Engineers (below-right of RELAY) -->
+  <!-- Your Engineers (client blue) -->
   <g filter="url(#rw-shadow)">
-    <rect x="345" y="173" width="150" height="40" rx="12" fill="#f5f5f5" stroke="#33ee69" stroke-width="1.5"/>
+    <rect x="300" y="140" width="130" height="36" rx="10" fill="#EEF4FF" stroke="#4B7BE5" stroke-width="1.5"/>
   </g>
-  <text x="420" y="199" font-size="14" font-weight="700" fill="#10100d" text-anchor="middle">Your Engineers</text>
+  <text x="365" y="163" font-size="12" font-weight="700" fill="#4B7BE5" text-anchor="middle">Your Engineers</text>
 </svg>
