@@ -68,7 +68,15 @@ git pull origin main
 - Commit messages must describe WHAT changed: "Update Farhand page 2 spacing to fix overflow" not "fix stuff"
 - If git pull has conflicts, resolve them before doing anything else.
 - Only push to `main` branch. Most changes will be in: `documents/`, `references/`, `brand/`, `assets/`, `memory/`, `app/src/`
-- The cadence is: **pull → edit → check spacing → fix → commit → push → repeat**
+- The cadence is: **pull → edit → check spacing → fix → save to documents → commit → push → repeat**
+- After EVERY round of HTML edits that pass spacing, save back to `documents/` via the API:
+```bash
+curl -s -X POST http://localhost:3001/api/documents/save \
+  -H "Content-Type: application/json" \
+  -d '{"path":"Marketing Materials/Farhand x Robotic Crew.html"}'
+```
+- `app/current.html` is a temporary working buffer — the git-tracked document in `documents/` is the source of truth. They must NEVER drift apart. If you edited current.html, save it back before committing.
+- NEVER commit `app/current.html` directly — it's gitignored because it contains base64 images. Always save via the API which converts base64 → `{{ASSET:path}}` templates.
 
 ### 2. Self-Improvement — Learn From Every Session (STRICT)
 
