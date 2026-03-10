@@ -123,8 +123,18 @@ Two columns side by side:
 
 ### How a Ticket Flows
 
-**Detected** by our remote team or your end-user → **Triaged** by technical remote support team → **Resolved** and documented
-Different branch Diagnosed -> **Dispatched** field technician rapidly -> Resolved
+Three paths to resolution:
+
+1. **Detected** → **Triaged** → **Resolved** (remote team fixes it)
+2. **Detected** → **Triaged** → **Escalated** → **Resolved** (your engineering team resolves)
+3. **Detected** → **Triaged** → **Escalated** → **Dispatched** → **Resolved** (field tech sent on-site)
+
+Box colors:
+- Detected: `orange` — issue originates from end-user or monitoring
+- Triaged: `farhand-green` — our remote team assesses
+- Escalated: `client-yellow` — your engineering team involved
+- Dispatched: `farhand-green` — our field tech deployed
+- Resolved & Documented: `bright-green` — closed and logged
 
 ### Proven Success (bottom-anchored)
 

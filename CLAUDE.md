@@ -169,16 +169,26 @@ Documents are stored in `documents/` and organized by folder. The sidebar shows 
 
 When adding a new document, update `documents/_tree.json` to include it in the tree.
 
-## AGENT DELEGATION
+## AGENT DELEGATION — MANDATORY (STRICT)
 
-When performing document work, delegate to specialized agents (`.claude/agents/`) instead of doing everything in the main context.
+You MUST delegate to specialized agents (`.claude/agents/`) for the tasks listed below. Do NOT perform these tasks inline in the main context — they belong to agents. This is not optional.
 
-| Task | Agent | When to Use |
-|------|-------|-------------|
-| Create/edit wireframe | `wireframer` | User describes content, wants to structure a document |
-| Render one page of HTML | `page-renderer` | Wireframe approved, ready to build HTML |
-| Check & fix spacing | `spacing-fixer` | After ANY write to current.html |
-| Audit wireframe compliance | `wireframe-auditor` | After HTML edits to wireframed documents |
+### When to Deploy Each Agent
+
+| Trigger | Agent | MUST or MAY |
+|---------|-------|-------------|
+| User says "create wireframe", "structure this content", or provides raw text to turn into a document | `wireframer` | **MUST** |
+| Wireframe is approved and user wants HTML rendered | `page-renderer` (one per page, parallel) | **MUST** |
+| You just wrote or edited `app/current.html` | `spacing-fixer` | **MUST** — every time, no exceptions |
+| You just edited HTML for a document that has a wireframe `.md` file | `wireframe-auditor` | **MUST** — run after spacing-fixer |
+| User asks "does the HTML match the wireframe?" or "audit compliance" | `wireframe-auditor` | **MUST** |
+
+### Rules — Non-Negotiable
+
+1. **NEVER manually run `curl -s http://localhost:3001/api/check-spacing` and interpret results yourself.** Launch the `spacing-fixer` agent instead. It knows the fix priority order and will iterate until all pages pass.
+2. **NEVER manually compare wireframe text against HTML yourself.** Launch the `wireframe-auditor` agent. It does word-for-word comparison and catches drift you'll miss.
+3. **NEVER write full-page HTML inline** when a wireframe exists. Launch `page-renderer` agents. They have the full design system (typography, spacing, component patterns, section library) that was removed from this CLAUDE.md to save context.
+4. **After EVERY HTML write → spacing-fixer → wireframe-auditor.** This is the mandatory chain. No shortcuts.
 
 ### Parallel Page Rendering
 
@@ -194,11 +204,17 @@ For multi-page documents, launch one `page-renderer` agent per page:
 4. Assemble: read all `_page-{N}.html` files, wrap in `<!DOCTYPE>` + `<head>` + `<style>` + `<body>`
 5. Write assembled HTML to `app/current.html`
 6. Launch `spacing-fixer` agent
-7. If wireframe exists, launch `wireframe-auditor` agent
+7. Launch `wireframe-auditor` agent
 
-### Small Edits (Non-Parallel)
+### Small Edits — What You CAN Do Inline
 
-For small edits (change text, adjust spacing, swap icon), edit `app/current.html` directly without agents. Only use agents for full page renders, spacing fix loops, or wireframe compliance audits.
+These are OK to do directly without agents:
+- Change a single text value (e.g., phone number, stat, label)
+- Adjust one CSS property (e.g., margin, padding, font-size)
+- Swap an icon class or color value
+- Fix a typo
+
+After even small edits, you MUST still run `spacing-fixer` agent if the change could affect layout (text length changes, spacing changes). Use your judgment — a phone number swap doesn't need it, but changing a paragraph does.
 
 ## WORKING FILE
 
