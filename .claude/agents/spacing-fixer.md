@@ -70,13 +70,17 @@ curl -s http://localhost:3001/api/check-spacing
 
 The API detects uneven spacing when `maxGap > 60px` AND `maxGap > 2.5 × avgGap`. This means one gap between sections is disproportionately large compared to the others.
 
-1. **Identify the largest gap** — check the `gaps` array and `advice` field to find which sections have the big gap between them.
-2. **Reduce the large gap** — decrease `padding-top` or `margin-top` on the section below the gap. Cut by 8-16px at a time.
-3. **Increase small gaps** — add `padding-top` to sections with smaller-than-average gaps to spread content more evenly.
-4. **Target**: all gaps should be within 2x of each other (no single gap dominating).
-5. UNEVEN_SPACING is a **blocking** status — must fix before proceeding, same as OVERFLOW.
+**Common cause:** The LAST section on each page (CTA footer, Proven Success, Data & Security, Bottom Line) uses `margin-top: auto` to anchor to the page bottom. This creates a large computed margin that the gap detection sees as uneven spacing. **This is intentional** — the footer SHOULD be at the bottom.
 
-**IMPORTANT**: `margin-top: auto` is banned on elements inside `.page` divs. If you find any, replace with explicit padding/margins. This CSS pattern hides whitespace from the spacing API.
+**Fix approach:**
+1. **Identify the large gap** — usually the last gap in the `gaps` array (before the footer element). This gap = the excess space on the page.
+2. **Do NOT remove `margin-top: auto`** from footer elements. Keep them anchored.
+3. **Redistribute the excess space** — increase `padding-top` on the non-footer sections above it to absorb the slack. The goal: spread content more evenly down the page, so the auto-margin gap shrinks naturally.
+4. Increase padding evenly across sections. Example: if excess gap is 200px and there are 4 sections above, add ~50px padding spread across them (more to visually sparse sections).
+5. **Target**: the footer auto-margin gap should be no more than 2x the average of other section gaps. A small gap before the footer is expected and OK.
+6. UNEVEN_SPACING is a **blocking** status — must fix before proceeding, same as OVERFLOW.
+
+**Only `margin-top: auto` on footer/CTA elements.** Never on mid-page sections.
 
 ## EDITING RULES
 

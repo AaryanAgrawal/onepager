@@ -283,7 +283,7 @@ Each `.page` div is one US Letter page. The preview panel auto-detects `.page` d
 **Key rules for multi-page:**
 - Each `.page` div must be exactly `8.5in × 11in` with `overflow: hidden`
 - Content must NOT overflow individual pages
-- Do NOT use `margin-top: auto` — it hides whitespace from the spacing agent. Use explicit padding/margins instead
+- Use `margin-top: auto` only on footer/CTA elements to anchor them to page bottom. The spacing agent's gap detection captures the computed margin value.
 - The body is a flowing container — NOT constrained to one page height
 - Logos must be base64-embedded (no `{{LOGO}}` placeholders in documents/ files — embed directly)
 
@@ -525,5 +525,5 @@ When a `.md` wireframe file exists for a document (e.g., `documents/Marketing Ma
 - NEVER use `brand/logo-250-base64.txt` — use `brand/logo-w-type-light-base64.txt`
 - NEVER nest `data-field` attributes (e.g., `<div data-field="a"><span data-field="b">`) — the update-text regex breaks on nested fields. Each `data-field` element must contain ONLY text, no child elements with their own `data-field`.
 - NEVER produce a page that looks like a plain letterhead — even minimalist layouts need visual structure (cards, borders, stats, rules). Every page should read as a designed sales document.
-- NEVER use `margin-top: auto` on elements inside `.page` divs — it hides whitespace from the spacing agent. Use explicit padding/margins instead.
+- Only use `margin-top: auto` on footer/CTA elements to anchor them to page bottom — never on mid-page sections. The spacing agent's gap detection captures computed auto-margin values.
 - NEVER fabricate numbers, stats, claims, or data — only use what's in Approved Copy or sourced from verified partner websites (e.g., fieldnation.com). If a stat doesn't exist in an approved source, don't put it on the page. Ask the user instead.

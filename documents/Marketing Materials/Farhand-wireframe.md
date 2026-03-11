@@ -158,23 +158,32 @@ Deployed in warehouses, manufacturing, hospitality, sidewalk delivery, and logis
 An AI agent trained to be your senior engineer
 
 ### Key Message
-Our technicians are experts in mechanical and electrical repairs — but robotics software is a fast-evolving field. So we built Relay. It ingests your docs to guide every technician through diagnostics step by step.
+Our technicians are experts in mechanical and electrical repairs — but robotics software is a fast-evolving field. So we built Relay. It turns your tribal knowledge into searchable, AI-guided institutional documents -- so every junior tech performs like a senior
 
-### Wiring Diagram (flexbox hub-and-spoke)
+### Wiring Diagram (3-node Relay chain, hub-and-spoke)
 
-Top row (left to right): **Your Robot** --dashed (CLI/SSH)-- **RELAY** --solid (platform)-- **Remote Support** <--solid (calls in)-- **Customer**
+Center chain (left to right): **Relay CLI** -- **Relay** -- **Relay HQ**
+All three `bright-green` fill, connected as a horizontal chain.
 
-Vertical from RELAY down (escalates) to bottom row:
+Spokes:
+- **Your Robot** --dashed (SSH)-- **Relay CLI** (left spoke)
+- **Relay** --solid (guides)-- **Remote Support** (below-left)
+- **Relay** --solid (dispatches)-- **Field Tech** (below-right)
+- **Customer** --solid (portal)-- **Relay HQ** (above)
+- **Relay HQ** --solid-- **Your Engineers** (right spoke)
+- **Relay HQ** --solid (integrates)-- small faint integration icons [AWS · Slack · ···] (below)
 
-Bottom row: **Field Tech** --solid (reports to)--> **Your Engineers**
-
-- RELAY is the `bright-green` hub circle with glow
+Node colors:
+- Relay CLI, Relay, Relay HQ: `bright-green` fill, connected chain
 - Your Robot, Your Engineers: `client-yellow` fill
 - Remote Support, Field Tech: `bright-green` stroke, light green fill
-- End User: `orange` stroke/text
-- Dashed line to Robot = CLI/SSH connection
+- Customer: `orange` stroke/text
+- Integration icons: very small, faint `gray-text`
+
+Connection rules:
+- Dashed line from Your Robot to Relay CLI = SSH
 - All other connections solid `bright-green`
-- Labels above each connector segment in `gray-text`
+- Labels on each connector in `gray-text`, one word each
 
 ### Capabilities (2×3 grid, icon + title + one line each) `[icons: orange-accent]`
 1. `[icon: file-text]` **AI-generated SOPs** — Upload your messy docs & create visual SOPs and customer training materials
