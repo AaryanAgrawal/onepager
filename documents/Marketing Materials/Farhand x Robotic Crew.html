@@ -397,28 +397,33 @@ body { width: 8.5in; margin: 0 auto; font-family: 'DM Sans', sans-serif; color: 
       <line x1="244" y1="72" x2="306" y2="72" stroke="#33ee69" stroke-width="4" stroke-linecap="round"/>
       <line x1="374" y1="72" x2="436" y2="72" stroke="#33ee69" stroke-width="4" stroke-linecap="round"/>
 
-      <!-- ===== SPOKE CONNECTORS (rounded bends) ===== -->
+      <!-- ===== SPOKE CONNECTORS ===== -->
+
       <!-- Your Robot -> Relay CLI (dashed = SSH) -->
       <line x1="115" y1="72" x2="196" y2="72" stroke="#33ee69" stroke-width="2.5" stroke-dasharray="5,3"/>
       <text x="155" y="63" font-size="11" fill="#999" text-anchor="middle">SSH</text>
 
-      <!-- Relay HQ -> Your Engineers -->
-      <line x1="484" y1="72" x2="555" y2="72" stroke="#33ee69" stroke-width="2.5"/>
+      <!-- Relay HQ -> Your Engineers (straight line from HQ right edge to Engineers left edge) -->
+      <line x1="484" y1="72" x2="560" y2="72" stroke="#33ee69" stroke-width="2.5"/>
 
-      <!-- Customer -> Relay HQ (rounded bend from right, down into HQ) -->
-      <path d="M530,20 L475,20 Q464,20 464,31 L464,48" stroke="#FF6821" stroke-width="2" fill="none" marker-end="url(#rw-arr-o)"/>
+      <!-- End User -> Relay HQ (orange arrow, rounded bend from top-right, avoids Engineers rect) -->
+      <!-- Path: from End User bottom center, down a bit, then left along top, then down into HQ -->
+      <path d="M635,32 L635,42 Q635,46 631,46 L478,46 Q468,46 468,52 L468,48" stroke="#FF6821" stroke-width="2" fill="none" marker-end="url(#rw-arr-o)"/>
 
       <!-- Relay -> Remote Support (rounded 90-degree bend: down then left) -->
-      <path d="M326,106 L326,130 Q326,140 316,140 L273,140" stroke="#33ee69" stroke-width="2.5" fill="none"/>
-      <text x="300" y="127" font-size="11" fill="#999" text-anchor="middle">guides</text>
+      <!-- Line starts at Relay bottom (cy=72 + r=34 = y=106), goes down, bends left -->
+      <path d="M326,108 L326,134 Q326,143 316,143 L273,143" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+      <text x="308" y="125" font-size="11" fill="#999" text-anchor="end">guides</text>
 
       <!-- Relay -> Field Tech (rounded 90-degree bend: down then right) -->
-      <path d="M354,106 L354,130 Q354,140 364,140 L380,140" stroke="#33ee69" stroke-width="2.5" fill="none"/>
-      <text x="366" y="118" font-size="11" fill="#999" text-anchor="end">dispatches</text>
+      <!-- Line starts at Relay bottom (y=106), goes down, bends right -->
+      <path d="M354,108 L354,134 Q354,143 364,143 L380,143" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+      <text x="372" y="125" font-size="11" fill="#999" text-anchor="start">dispatches</text>
 
-      <!-- Relay HQ -> Tools (rounded bend: down then right) -->
-      <path d="M460,96 L460,140 Q460,150 470,150 L498,150" stroke="#33ee69" stroke-width="1.5" stroke-dasharray="3,2" fill="none"/>
-      <text x="476" y="135" font-size="11" fill="#999" text-anchor="middle" transform="rotate(-90 476 135)">integrates</text>
+      <!-- Relay HQ -> Tools (dashed, rounded bend: down then right) -->
+      <!-- Line starts at HQ bottom (cy=72 + r=24 = y=96), goes down, bends right -->
+      <path d="M460,98 L460,143 Q460,153 470,153 L498,153" stroke="#33ee69" stroke-width="1.5" stroke-dasharray="3,2" fill="none"/>
+      <text x="480" y="138" font-size="11" fill="#999" text-anchor="start">integrates</text>
 
       <!-- ===== NODES ===== -->
 
@@ -430,45 +435,52 @@ body { width: 8.5in; margin: 0 auto; font-family: 'DM Sans', sans-serif; color: 
 
       <!-- Relay CLI (green circle with terminal icon) -->
       <g filter="url(#rw-glow-sm)">
-        <circle cx="220" cy="72" r="24" fill="#33ee69"/>
+        <circle cx="220" cy="72" r="24" fill="#33ee69" stroke="#009F4A" stroke-width="1.5"/>
       </g>
       <!-- Terminal icon >_ -->
-      <text x="212" y="68" font-size="13" fill="#10100d" font-family="monospace" font-weight="600">&gt;_</text>
-      <text x="220" y="86" font-size="9" fill="#10100d" text-anchor="middle" font-weight="600">CLI</text>
+      <text x="220" y="70" font-size="12" fill="#10100d" font-family="monospace" font-weight="700" text-anchor="middle">&gt;_</text>
+      <text x="220" y="82" font-size="8" fill="#10100d" text-anchor="middle" font-weight="600">Relay CLI</text>
 
       <!-- RELAY (center hub, bigger circle with sparkle) -->
       <g filter="url(#rw-glow)">
         <circle cx="340" cy="72" r="34" fill="#33ee69"/>
       </g>
-      <g transform="translate(332, 56)">
+      <g transform="translate(332, 54)">
         <svg width="16" height="16" viewBox="0 0 256 256" fill="#10100d">
           <path d="M208,144a15.78,15.78,0,0,1-10.42,14.94l-51.65,19-19,51.61a15.92,15.92,0,0,1-29.88,0L78.07,178l-51.65-19a15.92,15.92,0,0,1,0-29.88l51.65-19,19-51.65a15.92,15.92,0,0,1,29.88,0l19,51.65,51.61,19A15.78,15.78,0,0,1,208,144ZM152,48h16V64a8,8,0,0,0,16,0V48h16a8,8,0,0,0,0-16H184V16a8,8,0,0,0-16,0V32H152a8,8,0,0,0,0,16Zm88,32h-8V72a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0V96h8a8,8,0,0,0,0-16Z"/>
         </svg>
       </g>
-      <text x="340" y="88" font-size="11" fill="#10100d" text-anchor="middle">Relay</text>
+      <text x="340" y="86" font-size="11" fill="#10100d" text-anchor="middle" font-weight="600">Relay</text>
 
-      <!-- Relay HQ (green circle with dashboard icon) -->
+      <!-- Relay HQ (green circle with building icon) -->
       <g filter="url(#rw-glow-sm)">
-        <circle cx="460" cy="72" r="24" fill="#33ee69"/>
+        <circle cx="460" cy="72" r="24" fill="#33ee69" stroke="#009F4A" stroke-width="1.5"/>
       </g>
-      <!-- Dashboard icon: 4 small squares -->
-      <rect x="451" y="60" width="7" height="7" rx="1" fill="#10100d"/>
-      <rect x="460" y="60" width="7" height="7" rx="1" fill="#10100d"/>
-      <rect x="451" y="69" width="7" height="7" rx="1" fill="#10100d"/>
-      <rect x="460" y="69" width="7" height="7" rx="1" fill="#10100d"/>
-      <text x="460" y="88" font-size="9" fill="#10100d" text-anchor="middle" font-weight="600">HQ</text>
+      <!-- Building icon (simple recognizable building shape) -->
+      <g transform="translate(452, 58)">
+        <!-- Main building body -->
+        <rect x="2" y="4" width="12" height="12" rx="1" fill="none" stroke="#10100d" stroke-width="1.5"/>
+        <!-- Roof/top -->
+        <rect x="5" y="0" width="6" height="5" rx="0.5" fill="none" stroke="#10100d" stroke-width="1.3"/>
+        <!-- Door -->
+        <rect x="6" y="10" width="4" height="6" rx="0.5" fill="#10100d"/>
+        <!-- Windows -->
+        <rect x="4" y="6" width="2.5" height="2" rx="0.3" fill="#10100d"/>
+        <rect x="9.5" y="6" width="2.5" height="2" rx="0.3" fill="#10100d"/>
+      </g>
+      <text x="460" y="86" font-size="8" fill="#10100d" text-anchor="middle" font-weight="600">Relay HQ</text>
 
-      <!-- Customer (orange, top-right, further from hub) -->
+      <!-- End User (orange, top-right, further from chain) -->
       <g filter="url(#rw-shadow)">
-        <rect x="530" y="5" width="80" height="30" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5"/>
+        <rect x="590" y="2" width="90" height="30" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5"/>
       </g>
-      <text x="570" y="25" font-size="11" fill="#FF6821" text-anchor="middle">End User</text>
+      <text x="635" y="22" font-size="11" fill="#FF6821" text-anchor="middle">End User</text>
 
       <!-- Your Engineers (client yellow) -->
       <g filter="url(#rw-shadow)">
-        <rect x="555" y="54" width="130" height="36" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5"/>
+        <rect x="560" y="54" width="130" height="36" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5"/>
       </g>
-      <text x="620" y="77" font-size="12" fill="#10100d" text-anchor="middle">Your Engineers</text>
+      <text x="625" y="77" font-size="12" fill="#10100d" text-anchor="middle">Your Engineers</text>
 
       <!-- Remote Support (bottom-left) -->
       <g filter="url(#rw-shadow)">
@@ -483,38 +495,55 @@ body { width: 8.5in; margin: 0 auto; font-family: 'DM Sans', sans-serif; color: 
       <text x="430" y="148" font-size="12" fill="#10100d" text-anchor="middle">Field Tech</text>
 
       <!-- ===== TOOL ICONS (real brand symbols, faint) ===== -->
-      <g opacity="0.35" transform="translate(505, 140)">
-        <!-- AWS (orange smile/arrow) -->
-        <g transform="translate(0,0)">
-          <path d="M3,6 Q8,10 13,6" stroke="#FF9900" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-          <path d="M10,7 L13,6 L12,9" stroke="#FF9900" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <text x="7" y="4" font-size="5" fill="#FF9900" text-anchor="middle" font-weight="700">aws</text>
+      <g opacity="0.35" transform="translate(505, 143)">
+
+        <!-- AWS icon: orange swoosh under "aws" text -->
+        <g transform="translate(0,-2)">
+          <text x="7" y="5" font-size="5" fill="#FF9900" text-anchor="middle" font-weight="800" font-family="Arial,sans-serif">aws</text>
+          <path d="M2,7 Q7,11 12,7" stroke="#FF9900" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M9.5,8 L12,7 L11.2,9.8" stroke="#FF9900" stroke-width="1.1" fill="none" stroke-linecap="round"/>
         </g>
-        <!-- Grafana (orange flame/circle) -->
-        <g transform="translate(22,0)">
-          <circle cx="6" cy="6" r="5.5" fill="none" stroke="#F46800" stroke-width="1.2"/>
-          <circle cx="6" cy="6" r="2" fill="#F46800"/>
-          <line x1="6" y1="0" x2="6" y2="2" stroke="#F46800" stroke-width="1"/>
-          <line x1="6" y1="10" x2="6" y2="12" stroke="#F46800" stroke-width="1"/>
-          <line x1="0" y1="6" x2="2" y2="6" stroke="#F46800" stroke-width="1"/>
-          <line x1="10" y1="6" x2="12" y2="6" stroke="#F46800" stroke-width="1"/>
+
+        <!-- Grafana icon: orange circle with radiating rays -->
+        <g transform="translate(24,-2)">
+          <circle cx="7" cy="6" r="5" fill="none" stroke="#F46800" stroke-width="1.3"/>
+          <circle cx="7" cy="6" r="2" fill="#F46800"/>
+          <!-- rays -->
+          <line x1="7" y1="0" x2="7" y2="1.5" stroke="#F46800" stroke-width="1"/>
+          <line x1="7" y1="10.5" x2="7" y2="12" stroke="#F46800" stroke-width="1"/>
+          <line x1="1" y1="6" x2="2.5" y2="6" stroke="#F46800" stroke-width="1"/>
+          <line x1="11.5" y1="6" x2="13" y2="6" stroke="#F46800" stroke-width="1"/>
+          <!-- diagonal rays -->
+          <line x1="3" y1="2" x2="4" y2="3.2" stroke="#F46800" stroke-width="0.8"/>
+          <line x1="11" y1="2" x2="10" y2="3.2" stroke="#F46800" stroke-width="0.8"/>
+          <line x1="3" y1="10" x2="4" y2="8.8" stroke="#F46800" stroke-width="0.8"/>
+          <line x1="11" y1="10" x2="10" y2="8.8" stroke="#F46800" stroke-width="0.8"/>
         </g>
-        <!-- Formant (blue F) -->
-        <g transform="translate(44,0)">
-          <rect x="1" y="0" width="10" height="12" rx="2" fill="#2563EB" opacity="0.8"/>
-          <text x="6" y="10" font-size="9" fill="white" text-anchor="middle" font-weight="700">F</text>
+
+        <!-- Formant icon: blue rounded rect with white F -->
+        <g transform="translate(48,-2)">
+          <rect x="1" y="0" width="12" height="12" rx="2.5" fill="#2563EB"/>
+          <text x="7" y="10" font-size="9" fill="white" text-anchor="middle" font-weight="700" font-family="Arial,sans-serif">F</text>
         </g>
-        <!-- Slack (hash #) -->
-        <g transform="translate(62,0)">
-          <text x="6" y="11" font-size="13" fill="#E01E5A" text-anchor="middle" font-weight="700">#</text>
+
+        <!-- Slack icon: colorful # hash with rounded segments -->
+        <g transform="translate(72,-2)">
+          <!-- Vertical bars -->
+          <rect x="3.5" y="0.5" width="2.2" height="11" rx="1.1" fill="#E01E5A"/>
+          <rect x="8.3" y="0.5" width="2.2" height="11" rx="1.1" fill="#2EB67D"/>
+          <!-- Horizontal bars -->
+          <rect x="0.5" y="3.5" width="11" height="2.2" rx="1.1" fill="#ECB22E" opacity="0.9"/>
+          <rect x="0.5" y="8.3" width="11" height="2.2" rx="1.1" fill="#36C5F0" opacity="0.9"/>
         </g>
-        <!-- Gmail (red envelope) -->
-        <g transform="translate(80,0)">
-          <rect x="0" y="1" width="12" height="9" rx="1.5" fill="#EA4335" opacity="0.85"/>
-          <path d="M0,2 L6,7 L12,2" stroke="white" stroke-width="1.2" fill="none"/>
+
+        <!-- Gmail icon: red envelope with white M -->
+        <g transform="translate(96,-2)">
+          <rect x="0" y="1" width="14" height="10" rx="1.8" fill="#EA4335"/>
+          <path d="M0.5,2 L7,7.5 L13.5,2" stroke="white" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
-        <!-- Ellipsis -->
-        <g transform="translate(100, 3)">
+
+        <!-- Ellipsis (...) -->
+        <g transform="translate(116, 2)">
           <circle cx="0" cy="4" r="1.3" fill="#999"/>
           <circle cx="5" cy="4" r="1.3" fill="#999"/>
           <circle cx="10" cy="4" r="1.3" fill="#999"/>
