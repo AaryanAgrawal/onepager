@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Rebuild wiring diagram v8: Symmetric layout.
-- Field Tech (top-left) and Remote Support (bottom-left) → into Relay
-- End User (top-right) → into Relay
-- Tools (bottom-right) → from HQ
-- All corner lines: horizontal first, 90° bend, vertical into circle
-- Real Phosphor fill icons
+"""Rebuild wiring diagram v9: Wider spacing for text labels.
+- Field Tech and Remote Support pushed LEFT for longer horizontal runs
+- End User pushed RIGHT for longer horizontal run
+- Text labels on horizontal segments: dispatches, guides, reports
+- CloudWatch + Grafana in tool icons
 """
 
 with open('app/current.html', 'r', encoding='utf-8') as f:
@@ -65,16 +64,17 @@ new_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 195" style
       <line x1="484" y1="90" x2="560" y2="90" stroke="#33ee69" stroke-width="2.5"/>
       <text x="522" y="82" font-size="11" fill="#999" text-anchor="middle">escalates</text>
 
-      <!-- TOP-LEFT: Field Tech -> Relay top (horizontal right, bend down into Relay) -->
-      <path d="M310,19 L324,19 Q332,19 332,27 L332,58" stroke="#33ee69" stroke-width="2.5" fill="none"/>
-      <text x="278" y="14" font-size="10" fill="#999" text-anchor="end">dispatches</text>
+      <!-- TOP-LEFT: Field Tech -> Relay top (horizontal right, bend down) -->
+      <path d="M265,19 L324,19 Q332,19 332,27 L332,58" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+      <text x="295" y="14" font-size="10" fill="#999" text-anchor="middle">dispatches</text>
 
-      <!-- TOP-RIGHT: End User -> Relay top (orange, horizontal left, bend down into Relay) -->
-      <path d="M418,17 L356,17 Q348,17 348,25 L348,58" stroke="#FF6821" stroke-width="2" fill="none" marker-end="url(#rw-arr-o)"/>
+      <!-- TOP-RIGHT: End User -> Relay top (orange, horizontal left, bend down) -->
+      <path d="M470,17 L356,17 Q348,17 348,25 L348,58" stroke="#FF6821" stroke-width="2" fill="none" marker-end="url(#rw-arr-o)"/>
+      <text x="413" y="12" font-size="10" fill="#999" text-anchor="middle">reports</text>
 
-      <!-- BOTTOM-LEFT: Remote Support -> Relay bottom (horizontal right, bend up into Relay) -->
-      <path d="M330,177 L332,177 Q340,177 340,169 L340,124" stroke="#33ee69" stroke-width="2.5" fill="none"/>
-      <text x="278" y="182" font-size="10" fill="#999" text-anchor="end">guides</text>
+      <!-- BOTTOM-LEFT: Remote Support -> Relay bottom (horizontal right, bend up) -->
+      <path d="M265,177 L332,177 Q340,177 340,169 L340,124" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+      <text x="299" y="172" font-size="10" fill="#999" text-anchor="middle">guides</text>
 
       <!-- BOTTOM-RIGHT: HQ -> Tools (dashed, vertical down, bend right) -->
       <path d="M460,114 L460,160 Q460,168 468,168 L488,168" stroke="#33ee69" stroke-width="1.5" stroke-dasharray="3,2" fill="none"/>
@@ -121,11 +121,11 @@ new_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 195" style
       </g>
       <text x="460" y="120" font-size="8" fill="#10100d" text-anchor="middle" font-weight="600">Relay HQ</text>
 
-      <!-- End User (orange, top-right) -->
+      <!-- End User (orange, top-right — pushed right for label space) -->
       <g filter="url(#rw-shadow)">
-        <rect x="418" y="4" width="90" height="26" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5"/>
+        <rect x="470" y="4" width="90" height="26" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5"/>
       </g>
-      <text x="463" y="22" font-size="11" fill="#FF6821" text-anchor="middle">End User</text>
+      <text x="515" y="22" font-size="11" fill="#FF6821" text-anchor="middle">End User</text>
 
       <!-- Your Engineers -->
       <g filter="url(#rw-shadow)">
@@ -133,21 +133,21 @@ new_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 195" style
       </g>
       <text x="625" y="95" font-size="12" fill="#10100d" text-anchor="middle">Your Engineers</text>
 
-      <!-- Field Tech (top-left) -->
+      <!-- Field Tech (top-left — pushed left for label space) -->
       <g filter="url(#rw-shadow)">
-        <rect x="200" y="4" width="110" height="30" rx="10" fill="#ECFDF5" stroke="#33ee69" stroke-width="1.5"/>
+        <rect x="155" y="4" width="110" height="30" rx="10" fill="#ECFDF5" stroke="#33ee69" stroke-width="1.5"/>
       </g>
-      <text x="255" y="24" font-size="12" fill="#10100d" text-anchor="middle">Field Tech</text>
+      <text x="210" y="24" font-size="12" fill="#10100d" text-anchor="middle">Field Tech</text>
 
-      <!-- Remote Support (bottom-left) -->
+      <!-- Remote Support (bottom-left — pushed left for label space) -->
       <g filter="url(#rw-shadow)">
-        <rect x="200" y="162" width="130" height="30" rx="10" fill="#ECFDF5" stroke="#33ee69" stroke-width="1.5"/>
+        <rect x="135" y="162" width="130" height="30" rx="10" fill="#ECFDF5" stroke="#33ee69" stroke-width="1.5"/>
       </g>
-      <text x="265" y="182" font-size="12" fill="#10100d" text-anchor="middle">Remote Support</text>
+      <text x="200" y="182" font-size="12" fill="#10100d" text-anchor="middle">Remote Support</text>
 
-      <!-- Tool icons (bottom-right, real brand logos faint) -->
+      <!-- Tool icons (bottom-right: CloudWatch, Grafana, Slack, Formant + ellipsis) -->
       <g opacity="0.35" transform="translate(495, 160)">
-        <!-- AWS -->
+        <!-- CloudWatch -->
         <g transform="translate(0,-2)">
           <text x="7" y="5" font-size="5" fill="#FF9900" text-anchor="middle" font-weight="800" font-family="Arial,sans-serif">aws</text>
           <path d="M2,7 Q7,11 12,7" stroke="#FF9900" stroke-width="1.6" fill="none" stroke-linecap="round"/>
@@ -162,25 +162,20 @@ new_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 195" style
           <line x1="1" y1="6" x2="2.5" y2="6" stroke="#F46800" stroke-width="1"/>
           <line x1="11.5" y1="6" x2="13" y2="6" stroke="#F46800" stroke-width="1"/>
         </g>
-        <!-- Formant -->
-        <g transform="translate(48,-2)">
-          <rect x="1" y="0" width="12" height="12" rx="2.5" fill="#2563EB"/>
-          <text x="7" y="10" font-size="9" fill="white" text-anchor="middle" font-weight="700" font-family="Arial,sans-serif">F</text>
-        </g>
         <!-- Slack -->
-        <g transform="translate(72,-2)">
+        <g transform="translate(48,-2)">
           <rect x="3.5" y="0.5" width="2.2" height="11" rx="1.1" fill="#E01E5A"/>
           <rect x="8.3" y="0.5" width="2.2" height="11" rx="1.1" fill="#2EB67D"/>
           <rect x="0.5" y="3.5" width="11" height="2.2" rx="1.1" fill="#ECB22E" opacity="0.9"/>
           <rect x="0.5" y="8.3" width="11" height="2.2" rx="1.1" fill="#36C5F0" opacity="0.9"/>
         </g>
-        <!-- Gmail -->
-        <g transform="translate(96,-2)">
-          <rect x="0" y="1" width="14" height="10" rx="1.8" fill="#EA4335"/>
-          <path d="M0.5,2 L7,7.5 L13.5,2" stroke="white" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Formant -->
+        <g transform="translate(72,-2)">
+          <rect x="1" y="0" width="12" height="12" rx="2.5" fill="#2563EB"/>
+          <text x="7" y="10" font-size="9" fill="white" text-anchor="middle" font-weight="700" font-family="Arial,sans-serif">F</text>
         </g>
         <!-- Ellipsis -->
-        <g transform="translate(116, 2)">
+        <g transform="translate(96, 2)">
           <circle cx="0" cy="4" r="1.3" fill="#999"/>
           <circle cx="5" cy="4" r="1.3" fill="#999"/>
           <circle cx="10" cy="4" r="1.3" fill="#999"/>
@@ -193,5 +188,5 @@ content = content[:svg_start] + new_svg + content[svg_end:]
 with open('app/current.html', 'w', encoding='utf-8') as f:
     f.write(content)
 
-print("SVG rebuilt — symmetric layout with Phosphor icons")
+print("SVG rebuilt — wider spacing with text labels on horizontal segments")
 print(f"New SVG length: {len(new_svg)} chars")
