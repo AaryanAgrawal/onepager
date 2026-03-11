@@ -105,8 +105,8 @@ Two columns side by side:
 
 | Icon | Color | Title | Stat/Line |
 |------|-------|-------|-----------|
-| UsersThree | `farhand-green` | Experienced Workforce | 20,000+ techs from robotics, EV, data centers & industrial machinery |
-| Clipboard | `farhand-green` | Proven Success | 4,000+ completed work orders by workforce across robot types |
+| UsersThree | `farhand-green` | Experienced Workforce | 1,700+ technicians from robotics, EV, data centers & industrial machinery |
+| Clipboard | `farhand-green` | Proven Success | 8,000+ work orders completed by workforce across robot types |
 | ShieldCheck | `farhand-green` | Certified & Vetted | Trained technically and in customer communications. |
 
 ### Remote Coverage (3 titled icon cards + highlight)
