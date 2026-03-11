@@ -82,10 +82,42 @@ The API detects uneven spacing when `maxGap > 60px` AND `maxGap > 2.5 × avgGap`
 
 **Only `margin-top: auto` on footer/CTA elements.** Never on mid-page sections.
 
+## SVG DIAGRAM OVERLAP CHECK
+
+After the spacing check passes, visually inspect any SVG diagrams on the page for element overlaps. The file is too large for the Edit tool — use Python for all edits.
+
+**What to check:**
+1. Parse the SVG `viewBox` dimensions (e.g., `viewBox="0 0 720 195"`)
+2. Check that no solid elements (rects, circles, text) occupy the same pixel area
+3. Account for filter effects (glow/shadow `stdDeviation`) — they extend visual bounds by ~2× stdDeviation in each direction
+4. Check that text labels don't overlap with nearby nodes or lines
+5. Check that connector lines/arrows don't cross through solid nodes
+
+**Common overlap causes:**
+- ViewBox too short — bottom elements get clipped or compressed
+- Glow filters (`feDropShadow`) making circles appear larger than their `r` attribute
+- Text labels placed between closely-spaced elements
+- Arrow paths routing through other nodes
+
+**Fix approach:**
+1. Increase SVG `viewBox` height if bottom elements are cramped
+2. Reduce glow `stdDeviation` if filter effects cause bleed
+3. Reposition text labels to clear space from nodes
+4. Reroute connector paths to avoid crossing through solid elements
+5. Shift the entire layout (e.g., move all y-coordinates down by N px) to create gaps
+
 ## EDITING RULES
 
 - Read `app/current.html` to understand the structure before making changes
 - Make targeted edits — change only the specific CSS values needed, don't rewrite sections
+- The file is ~1.5MB due to base64 images. Use Python for all edits:
+  ```python
+  with open('app/current.html', 'r', encoding='utf-8') as f:
+      content = f.read()
+  content = content.replace('old_value', 'new_value')
+  with open('app/current.html', 'w', encoding='utf-8') as f:
+      f.write(content)
+  ```
 - After each edit, re-run the spacing check
 - Track what you changed so you can report it
 - Each `.page` div is independent — fix one page at a time
