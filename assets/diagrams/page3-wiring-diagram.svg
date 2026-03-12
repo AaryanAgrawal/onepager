@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 720 195" width="720" height="195" style="font-family:'DM Sans','Inter',sans-serif; background:#fff;">
+  <defs>
+    <filter id="rw-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#33ee69" flood-opacity="0.55"/>
+    </filter>
+    <filter id="rw-glow-sm" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#33ee69" flood-opacity="0.4"/>
+    </filter>
+    <filter id="rw-shadow" x="-10%" y="-10%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.06"/>
+    </filter>
+    <marker id="rw-arr-o" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto">
+      <path d="M0,0 L6,2.5 L0,5" fill="#FF6821"/>
+    </marker>
+  </defs>
+
+  <!-- ===== CONNECTORS (behind nodes) ===== -->
+
+  <!-- Chain bars between circles -->
+  <line x1="244" y1="90" x2="306" y2="90" stroke="#33ee69" stroke-width="4" stroke-linecap="round"/>
+  <line x1="374" y1="90" x2="436" y2="90" stroke="#33ee69" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Your Robot -> CLI (dashed SSH) -->
+  <line x1="115" y1="90" x2="196" y2="90" stroke="#33ee69" stroke-width="2.5" stroke-dasharray="5,3"/>
+  <text x="155" y="82" font-size="11" fill="#999" text-anchor="middle">SSH</text>
+
+  <!-- HQ -> Your Engineers -->
+  <line x1="484" y1="90" x2="560" y2="90" stroke="#33ee69" stroke-width="2.5"/>
+  <text x="522" y="82" font-size="11" fill="#999" text-anchor="middle">escalates</text>
+
+  <!-- TOP-LEFT: Field Tech -> Relay top (horizontal right, bend down) -->
+  <path d="M235,19 L324,19 Q332,19 332,27 L332,58" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+  <text x="280" y="14" font-size="10" fill="#999" text-anchor="middle">dispatches</text>
+
+  <!-- TOP-RIGHT: End User -> Relay top (orange, horizontal left, bend down) -->
+  <path d="M470,17 L356,17 Q348,17 348,25 L348,58" stroke="#FF6821" stroke-width="2" fill="none" marker-end="url(#rw-arr-o)"/>
+  <text x="413" y="12" font-size="10" fill="#999" text-anchor="middle">reports</text>
+
+  <!-- BOTTOM-LEFT: Remote Support -> Relay bottom (horizontal right, bend up) -->
+  <path d="M265,177 L332,177 Q340,177 340,169 L340,124" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+  <text x="299" y="172" font-size="10" fill="#999" text-anchor="middle">guides</text>
+
+  <!-- BOTTOM-RIGHT: HQ -> Tools (dashed, vertical down, bend right) -->
+  <path d="M460,114 L460,160 Q460,168 468,168 L488,168" stroke="#33ee69" stroke-width="1.5" stroke-dasharray="3,2" fill="none"/>
+  <text x="470" y="148" font-size="10" fill="#999" text-anchor="start">integrates</text>
+
+  <!-- ===== NODES ===== -->
+
+  <!-- Your Robot -->
+  <g filter="url(#rw-shadow)">
+    <rect x="15" y="72" width="100" height="36" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5"/>
+  </g>
+  <text x="65" y="95" font-size="12" fill="#10100d" text-anchor="middle">Your Robot</text>
+
+  <!-- Relay CLI (Phosphor Terminal) -->
+  <g filter="url(#rw-glow-sm)">
+    <circle cx="220" cy="90" r="24" fill="#33ee69"/>
+  </g>
+  <g transform="translate(209, 79)">
+    <svg width="22" height="22" viewBox="0 0 256 256" fill="#10100d">
+      <path d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM77.66,173.66a8,8,0,0,1-11.32-11.32L100.69,128,66.34,93.66A8,8,0,0,1,77.66,82.34l40,40a8,8,0,0,1,0,11.32ZM192,176H128a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Z"/>
+    </svg>
+  </g>
+  <text x="220" y="120" font-size="8" fill="#10100d" text-anchor="middle" font-weight="600">Relay CLI</text>
+
+  <!-- RELAY center (Phosphor Sparkle) -->
+  <g filter="url(#rw-glow)">
+    <circle cx="340" cy="90" r="34" fill="#33ee69"/>
+  </g>
+  <g transform="translate(329, 71)">
+    <svg width="22" height="22" viewBox="0 0 256 256" fill="#10100d">
+      <path d="M208,144a15.78,15.78,0,0,1-10.42,14.94l-51.65,19-19,51.61a15.92,15.92,0,0,1-29.88,0L78.07,178l-51.65-19a15.92,15.92,0,0,1,0-29.88l51.65-19,19-51.65a15.92,15.92,0,0,1,29.88,0l19,51.65,51.61,19A15.78,15.78,0,0,1,208,144ZM152,48h16V64a8,8,0,0,0,16,0V48h16a8,8,0,0,0,0-16H184V16a8,8,0,0,0-16,0V32H152a8,8,0,0,0,0,16Zm88,32h-8V72a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16h8v8a8,8,0,0,0,16,0V96h8a8,8,0,0,0,0-16Z"/>
+    </svg>
+  </g>
+  <text x="340" y="105" font-size="11" fill="#10100d" text-anchor="middle" font-weight="600">Relay</text>
+
+  <!-- Relay HQ (Phosphor Buildings) -->
+  <g filter="url(#rw-glow-sm)">
+    <circle cx="460" cy="90" r="24" fill="#33ee69"/>
+  </g>
+  <g transform="translate(449, 79)">
+    <svg width="22" height="22" viewBox="0 0 256 256" fill="#10100d">
+      <path d="M239.73,208H224V96a16,16,0,0,0-16-16H164a4,4,0,0,0-4,4V208H144V32.41a16.43,16.43,0,0,0-6.16-13,16,16,0,0,0-18.72-.69L39.12,72A16,16,0,0,0,32,85.34V208H16.27A8.18,8.18,0,0,0,8,215.47,8,8,0,0,0,16,224H240a8,8,0,0,0,8-8.53A8.18,8.18,0,0,0,239.73,208ZM76,184a8,8,0,0,1-8.53,8A8.18,8.18,0,0,1,60,183.72V168.27A8.19,8.19,0,0,1,67.47,160,8,8,0,0,1,76,168Zm0-56a8,8,0,0,1-8.53,8A8.19,8.19,0,0,1,60,127.72V112.27A8.19,8.19,0,0,1,67.47,104,8,8,0,0,1,76,112Zm40,56a8,8,0,0,1-8.53,8,8.18,8.18,0,0,1-7.47-8.26V168.27a8.19,8.19,0,0,1,7.47-8.26,8,8,0,0,1,8.53,8Zm0-56a8,8,0,0,1-8.53,8,8.19,8.19,0,0,1-7.47-8.26V112.27a8.19,8.19,0,0,1,7.47-8.26,8,8,0,0,1,8.53,8Z"/>
+    </svg>
+  </g>
+  <text x="460" y="120" font-size="8" fill="#10100d" text-anchor="middle" font-weight="600">Relay HQ</text>
+
+  <!-- End User (orange, top-right) -->
+  <g filter="url(#rw-shadow)">
+    <rect x="470" y="4" width="90" height="26" rx="10" fill="#FFF4ED" stroke="#FF6821" stroke-width="1.5"/>
+  </g>
+  <text x="515" y="22" font-size="11" fill="#FF6821" text-anchor="middle">End User</text>
+
+  <!-- Your Engineers -->
+  <g filter="url(#rw-shadow)">
+    <rect x="560" y="72" width="130" height="36" rx="10" fill="#FFFBEB" stroke="#EAB308" stroke-width="1.5"/>
+  </g>
+  <text x="625" y="95" font-size="12" fill="#10100d" text-anchor="middle">Your Engineers</text>
+
+  <!-- Field Tech (top-left) -->
+  <g filter="url(#rw-shadow)">
+    <rect x="125" y="4" width="110" height="30" rx="10" fill="#ECFDF5" stroke="#33ee69" stroke-width="1.5"/>
+  </g>
+  <text x="180" y="24" font-size="12" fill="#10100d" text-anchor="middle">Field Tech</text>
+
+  <!-- Remote Support (bottom-left) -->
+  <g filter="url(#rw-shadow)">
+    <rect x="135" y="162" width="130" height="30" rx="10" fill="#ECFDF5" stroke="#33ee69" stroke-width="1.5"/>
+  </g>
+  <text x="200" y="182" font-size="12" fill="#10100d" text-anchor="middle">Remote Support</text>
+
+  <!-- Tool icons (bottom-right: CloudWatch, Grafana, Slack, Formant + ellipsis) -->
+  <g opacity="0.5" transform="translate(495, 158)">
+    <image href="data:image/svg+xml;base64,PHN2ZyByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+QW1hem9uIEFXUzwvdGl0bGU+PHBhdGggZD0iTTYuNzYzIDEwLjAzNmMwIC4yOTYuMDMyLjUzNS4wODguNzEuMDY0LjE3Ni4xNDQuMzY4LjI1Ni41NzYuMDQuMDYzLjA1Ni4xMjcuMDU2LjE4MyAwIC4wOC0uMDQ4LjE2LS4xNTIuMjRsLS41MDMuMzM1YS4zODMuMzgzIDAgMCAxLS4yMDguMDcyYy0uMDggMC0uMTYtLjA0LS4yMzktLjExMmEyLjQ3IDIuNDcgMCAwIDEtLjI4Ny0uMzc1IDYuMTggNi4xOCAwIDAgMS0uMjQ4LS40NzFjLS42MjIuNzM0LTEuNDA1IDEuMTAxLTIuMzQ3IDEuMTAxLS42NyAwLTEuMjA1LS4xOTEtMS41OTYtLjU3NC0uMzkxLS4zODQtLjU5LS44OTQtLjU5LTEuNTMzIDAtLjY3OC4yMzktMS4yMy43MjYtMS42NDQuNDg3LS40MTUgMS4xMzMtLjYyMyAxLjk1NS0uNjIzLjI3MiAwIC41NTEuMDI0Ljg0Ni4wNjQuMjk2LjA0LjYuMTA0LjkxOC4xNzZ2LS41ODNjMC0uNjA3LS4xMjctMS4wMy0uMzc1LTEuMjc3LS4yNTUtLjI0OC0uNjg2LS4zNjctMS4zLS4zNjctLjI4IDAtLjU2OC4wMzEtLjg2My4xMDMtLjI5NS4wNzItLjU4My4xNi0uODYyLjI3MmEyLjI4NyAyLjI4NyAwIDAgMS0uMjguMTA0LjQ4OC40ODggMCAwIDEtLjEyNy4wMjNjLS4xMTIgMC0uMTY4LS4wOC0uMTY4LS4yNDd2LS4zOTFjMC0uMTI4LjAxNi0uMjI0LjA1Ni0uMjhhLjU5Ny41OTcgMCAwIDEgLjIyNC0uMTY3Yy4yNzktLjE0NC42MTQtLjI2NCAxLjAwNS0uMzZhNC44NCA0Ljg0IDAgMCAxIDEuMjQ2LS4xNTFjLjk1IDAgMS42NDQuMjE2IDIuMDkxLjY0Ny40MzkuNDMuNjYyIDEuMDg1LjY2MiAxLjk2M3YyLjU4NnptLTMuMjQgMS4yMTRjLjI2MyAwIC41MzQtLjA0OC44MjItLjE0NC4yODctLjA5Ni41NDMtLjI3MS43NTgtLjUxLjEyOC0uMTUyLjIyNC0uMzIuMjcyLS41MTIuMDQ3LS4xOTEuMDgtLjQyMy4wOC0uNjk0di0uMzM1YTYuNjYgNi42NiAwIDAgMC0uNzM1LS4xMzYgNi4wMiA2LjAyIDAgMCAwLS43NS0uMDQ4Yy0uNTM1IDAtLjkyNi4xMDQtMS4xOS4zMi0uMjYzLjIxNS0uMzkuNTE4LS4zOS45MTcgMCAuMzc1LjA5NS42NTUuMjk1Ljg0Ni4xOTEuMi40Ny4yOTYuODM4LjI5NnptNi40MS44NjJjLS4xNDQgMC0uMjQtLjAyNC0uMzA0LS4wOC0uMDY0LS4wNDgtLjEyLS4xNi0uMTY4LS4zMTFMNy41ODYgNS41NWExLjM5OCAxLjM5OCAwIDAgMS0uMDcyLS4zMmMwLS4xMjguMDY0LS4yLjE5MS0uMmguNzgzYy4xNTEgMCAuMjU1LjAyNS4zMS4wOC4wNjUuMDQ4LjExMy4xNi4xNi4zMTJsMS4zNDIgNS4yODQgMS4yNDUtNS4yODRjLjA0LS4xNi4wODgtLjI2NC4xNTEtLjMxMmEuNTQ5LjU0OSAwIDAgMSAuMzItLjA4aC42MzhjLjE1MiAwIC4yNTYuMDI1LjMyLjA4LjA2My4wNDguMTIuMTYuMTUxLjMxMmwxLjI2MSA1LjM0OCAxLjM4MS01LjM0OGMuMDQ4LS4xNi4xMDQtLjI2NC4xNi0uMzEyYS41Mi41MiAwIDAgMSAuMzExLS4wOGguNzQzYy4xMjcgMCAuMi4wNjUuMi4yIDAgLjA0LS4wMDkuMDgtLjAxNy4xMjhhMS4xMzcgMS4xMzcgMCAwIDEtLjA1Ni4ybC0xLjkyMyA2LjE3Yy0uMDQ4LjE2LS4xMDQuMjYzLS4xNjguMzExYS41MS41MSAwIDAgMS0uMzAzLjA4aC0uNjg3Yy0uMTUxIDAtLjI1NS0uMDI0LS4zMi0uMDgtLjA2My0uMDU2LS4xMTktLjE2LS4xNS0uMzJsLTEuMjM4LTUuMTQ4LTEuMjMgNS4xNGMtLjA0LjE2LS4wODcuMjY0LS4xNS4zMi0uMDY1LjA1Ni0uMTc3LjA4LS4zMi4wOHptMTAuMjU2LjIxNWMtLjQxNSAwLS44My0uMDQ4LTEuMjI5LS4xNDMtLjM5OS0uMDk2LS43MS0uMi0uOTE4LS4zMi0uMTI4LS4wNzEtLjIxNS0uMTUxLS4yNDctLjIyM2EuNTYzLjU2MyAwIDAgMS0uMDQ4LS4yMjR2LS40MDdjMC0uMTY3LjA2NC0uMjQ3LjE4My0uMjQ3LjA0OCAwIC4wOTYuMDA4LjE0NC4wMjQuMDQ4LjAxNi4xMi4wNDguMi4wOC4yNzEuMTIuNTY2LjIxNS44NzguMjc5LjMxOS4wNjQuNjMuMDk2Ljk1LjA5Ni41MDIgMCAuODk0LS4wODggMS4xNjUtLjI2NGEuODYuODYgMCAwIDAgLjQxNS0uNzU4Ljc3Ny43NzcgMCAwIDAtLjIxNS0uNTU5Yy0uMTQ0LS4xNTEtLjQxNi0uMjg3LS44MDctLjQxNWwtMS4xNTctLjM2Yy0uNTgzLS4xODMtMS4wMTQtLjQ1NC0xLjI3Ny0uODEzYTEuOTAyIDEuOTAyIDAgMCAxLS40LTEuMTU4YzAtLjMzNS4wNzMtLjYzLjIxNi0uODg2LjE0NC0uMjU1LjMzNS0uNDc5LjU3NS0uNjU0LjI0LS4xODQuNTEtLjMyLjgzLS40MTUuMzItLjA5Ni42NTUtLjEzNiAxLjAwNi0uMTM2LjE3NSAwIC4zNTkuMDA4LjUzNS4wMzIuMTgzLjAyNC4zNS4wNTYuNTE4LjA4OC4xNi4wNC4zMTIuMDguNDU1LjEyNy4xNDQuMDQ4LjI1Ni4wOTYuMzM2LjE0NGEuNjkuNjkgMCAwIDEgLjI0LjIuNDMuNDMgMCAwIDEgLjA3MS4yNjN2LjM3NWMwIC4xNjgtLjA2NC4yNTYtLjE4NC4yNTZhLjgzLjgzIDAgMCAxLS4zMDMtLjA5NiAzLjY1MiAzLjY1MiAwIDAgMC0xLjUzMi0uMzExYy0uNDU1IDAtLjgxNS4wNzEtMS4wNjIuMjIzLS4yNDguMTUyLS4zNzUuMzgzLS4zNzUuNzEgMCAuMjI0LjA4LjQxNi4yNC41NjcuMTU5LjE1Mi40NTQuMzA0Ljg3Ny40NGwxLjEzNC4zNThjLjU3NC4xODQuOTkuNDQgMS4yMzcuNzY3LjI0Ny4zMjcuMzY3LjcwMi4zNjcgMS4xMTcgMCAuMzQzLS4wNzIuNjU1LS4yMDcuOTI2LS4xNDQuMjcyLS4zMzYuNTExLS41ODMuNzAzLS4yNDguMi0uNTQzLjM0My0uODg2LjQ0Ny0uMzYuMTExLS43MzQuMTY3LTEuMTQyLjE2N3pNMjEuNjk4IDE2LjIwN2MtMi42MjYgMS45NC02LjQ0MiAyLjk2OS05LjcyMiAyLjk2OS00LjU5OCAwLTguNzQtMS43LTExLjg3LTQuNTI2LS4yNDctLjIyMy0uMDI0LS41MjcuMjcyLS4zNTEgMy4zODQgMS45NjMgNy41NTkgMy4xNTMgMTEuODc3IDMuMTUzIDIuOTE0IDAgNi4xMTQtLjYwNyA5LjA2LTEuODUyLjQzOS0uMi44MTQuMjg3LjM4My42MDd6TTIyLjc5MiAxNC45NjFjLS4zMzYtLjQzLTIuMjItLjIwNy0zLjA3NC0uMTAzLS4yNTUuMDMyLS4yOTUtLjE5Mi0uMDYzLS4zNiAxLjUtMS4wNTMgMy45NjctLjc1IDQuMjU0LS4zOTkuMjg3LjM2LS4wOCAyLjgyNi0xLjQ4NSA0LjAwNy0uMjE1LjE4NC0uNDIzLjA4OC0uMzI3LS4xNTEuMzItLjc5IDEuMDMtMi41Ny42OTUtMi45OTR6Ii8+PC9zdmc+" x="0" y="0" width="14" height="14"/>
+    <image href="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjRjQ2ODAwIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48dGl0bGU+R3JhZmFuYTwvdGl0bGU+PHBhdGggZD0iTTIzLjAyIDEwLjU5YTguNTc4IDguNTc4IDAgMCAwLS44NjItMy4wMzQgOC45MTEgOC45MTEgMCAwIDAtMS43ODktMi40NDVjLjMzNy0xLjM0Mi0uNDEzLTIuNTA1LS40MTMtMi41MDUtMS4yOTItLjA4LTIuMTEzLjQtMi40MTYuNjItLjA1Mi0uMDItLjEwMi0uMDQ0LS4xNTQtLjA2NC0uMjItLjA4OS0uNDQ2LS4xNzItLjY3Ny0uMjQ3LS4yMzEtLjA3My0uNDctLjE0LS43MTEtLjE5N2E5Ljg2NyA5Ljg2NyAwIDAgMC0uODc1LS4xNjFDMTQuNTU3Ljc1MyAxMi45NCAwIDEyLjk0IDBjLTEuODA0IDEuMTQ1LTIuMTQ3IDIuNzQ0LTIuMTQ3IDIuNzQ0bC0uMDE4LjA5M2MtLjA5OC4wMjktLjIuMDU3LS4yOTguMDg4LS4xMzguMDQyLS4yNzUuMDk0LS40MTMuMTQzLS4xMzguMDU1LS4yNzUuMTA3LS40MS4xNjZhOC44NjkgOC44NjkgMCAwIDAtMS41NTcuODdsLS4wNjMtLjAyOWMtMi40OTctLjk1NS00LjcxNi4xOTUtNC43MTYuMTk1LS4yMDMgMi42NTguOTk2IDQuMzMgMS4yMzUgNC42MzZhMTEuNjA4IDExLjYwOCAwIDAgMC0uNjA3IDIuNjM1QzEuNjM2IDEyLjY3Ny45NTMgMTUuMDE0Ljk1MyAxNS4wMTRjMS45MjYgMi4yMTQgNC4xNzEgMi4zNTEgNC4xNzEgMi4zNTEuMDAzLS4wMDIuMDA2LS4wMDIuMDA2LS4wMDUuMjg1LjUwOS42MTUuOTk0Ljk4NiAxLjQ0Ni4xNTYuMTkuMzIuMzcxLjQ4OC41NDgtLjcwNCAyLjAwOS4wOTkgMy42OC4wOTkgMy42OCAyLjE0NC4wOCAzLjU1My0uOTM3IDMuODQ5LTEuMTczYTkuNzg0IDkuNzg0IDAgMCAwIDMuMTY0LjUwMWguMDhsLjA1NS0uMDAzLjEwNy0uMDAyLjEwMy0uMDA1LjAwMy4wMDJjMS4wMSAxLjQ0IDIuNzg4IDEuNjQ2IDIuNzg4IDEuNjQ2IDEuMjY0LTEuMzMyIDEuMzM3LTIuNjUzIDEuMzM3LTIuOTR2LS4wNThjMC0uMDItLjAwMy0uMDM5LS4wMDMtLjA2LjI2NS0uMTg3LjUyLS4zODcuNzU4LS42YTcuODc1IDcuODc1IDAgMCAwIDEuNDE1LTEuN2MxLjQzLjA4MyAyLjQzNy0uODg1IDIuNDM3LS44ODUtLjIzNi0xLjQ5LTEuMDg1LTIuMjE2LTEuMjY0LTIuMzU0bC0uMDE4LS4wMTMtLjAxNi0uMDEzYS4yMTcuMjE3IDAgMCAxLS4wMzEtLjAyYy4wMDgtLjA5Mi4wMTYtLjE4LjAyLS4yNy4wMTEtLjE2Mi4wMTYtLjMyMy4wMTYtLjQ4di0uMjUzbC0uMDA1LS4wOTgtLjAwOC0uMTM1YTEuODkxIDEuODkxIDAgMCAwLS4wMS0uMTNjLS4wMDMtLjA0Mi0uMDA4LS4wODMtLjAxMy0uMTI1bC0uMDE2LS4xMjQtLjAxOC0uMTIyYTYuMjE1IDYuMjE1IDAgMCAwLTIuMDMyLTMuNzMgNi4wMTUgNi4wMTUgMCAwIDAtMy4yMjItMS40NiA2LjI5MiA2LjI5MiAwIDAgMC0uODUtLjA0OGwtLjEwNy4wMDJoLS4wNjNsLS4wNDQuMDAzLS4xMDQuMDA4YTQuNzc3IDQuNzc3IDAgMCAwLTMuMzM1IDEuNjk1Yy0uMzMyLjQtLjU5Mi44NC0uNzY4IDEuMjk3YTQuNTk0IDQuNTk0IDAgMCAwLS4zMTIgMS44MTdsLjAwMy4wOTFjLjAwNS4wNTUuMDA3LjExLjAxMy4xNjRhMy42MTUgMy42MTUgMCAwIDAgLjY5OCAxLjgyIDMuNTMgMy41MyAwIDAgMCAxLjgyNyAxLjI4MmMuMzMuMDk4LjY2LjE0Ljk3MS4xMzcuMDM5IDAgLjA3OCAwIC4xMTQtLjAwMmwuMDYzLS4wMDNjLjAyIDAgLjA0MS0uMDAzLjA2Mi0uMDAzLjAzNC0uMDAyLjA2NS0uMDA3LjA5OS0uMDEuMDA3IDAgLjAxOC0uMDAzLjAyOC0uMDAzbC4wMzEtLjAwNS4wNi0uMDA4YTEuMTggMS4xOCAwIDAgMCAuMTEyLS4wMmMuMDM2LS4wMDguMDcyLS4wMTMuMTA5LS4wMjRhMi42MzQgMi42MzQgMCAwIDAgLjkxNC0uNDE1Yy4wMjgtLjAyLjA1Ni0uMDQxLjA4NS0uMDY1YS4yNDguMjQ4IDAgMCAwIC4wMzktLjM1LjI0NC4yNDQgMCAwIDAtLjMwOS0uMDZsLS4wNzguMDQyYy0uMDkuMDQ0LS4xODQuMDgzLS4yODMuMTE2YTIuNDc2IDIuNDc2IDAgMCAxLS40NzUuMDk2Yy0uMDI4LjAwMy0uMDU0LjAwNi0uMDgzLjAwNmwtLjA4My4wMDJjLS4wMjYgMC0uMDU0IDAtLjA4LS4wMDJsLS4xMDItLjAwNmgtLjAxMmwtLjAyNC4wMDZjLS4wMTYtLjAwMy0uMDMxLS4wMDMtLjA0NC0uMDA2LS4wMzEtLjAwMi0uMDYtLjAwNy0uMDkxLS4wMWEyLjU5IDIuNTkgMCAwIDEtLjcyNC0uMjEzIDIuNTU3IDIuNTU3IDAgMCAxLS42NjctLjQzOCAyLjUyIDIuNTIgMCAwIDEtLjgwNS0xLjQ3NSAyLjMwNiAyLjMwNiAwIDAgMS0uMDI5LS40NDRsLjAwNi0uMTIydi0uMDIzbC4wMDItLjAzMWMuMDAzLS4wMjEuMDAzLS4wNC4wMDUtLjA2YTMuMTYzIDMuMTYzIDAgMCAxIDEuMzUyLTIuMjkgMy4xMiAzLjEyIDAgMCAxIC45MzctLjQzIDIuOTQ2IDIuOTQ2IDAgMCAxIC43NzYtLjEwMWguMDZsLjA3LjAwMi4wNDUuMDAzaC4wMjZsLjA3LjAwNWE0LjA0MSA0LjA0MSAwIDAgMSAxLjYzNS40OSAzLjk0IDMuOTQgMCAwIDEgMS42MDIgMS42NjIgMy43NyAzLjc3IDAgMCAxIC4zOTcgMS40MTRsLjAwNS4wNzYuMDAzLjA3NWMuMDAyLjAyNi4wMDIuMDUuMDAyLjA3NSAwIC4wMjQuMDAzLjA1MiAwIC4wN3YuMDY1bC0uMDAyLjA3My0uMDA4LjE3NGE2LjE5NSA2LjE5NSAwIDAgMS0uMDguNjM5IDUuMSA1LjEgMCAwIDEtLjI2Ny45MjcgNS4zMSA1LjMxIDAgMCAxLS42MjQgMS4xMyA1LjA1MiA1LjA1MiAwIDAgMS0zLjIzNyAyLjAxNCA0LjgyIDQuODIgMCAwIDEtLjY0OS4wNjZsLS4wMzkuMDAzaC0uMjg3YTYuNjA3IDYuNjA3IDAgMCAxLTEuNzE2LS4yNjUgNi43NzYgNi43NzYgMCAwIDEtMy40LTIuMjc0IDYuNzUgNi43NSAwIDAgMS0uNzQ2LTEuMTUgNi42MTYgNi42MTYgMCAwIDEtLjcxNC0yLjU5NmwtLjAwNS0uMDgzLS4wMDItLjAydi0uMDU2bC0uMDAzLS4wNzN2LS4wOTZsLS4wMDMtLjEwNHYtLjA3bC4wMDMtLjE2M2MuMDA4LS4yMi4wMjYtLjQ1LjA1NC0uNjc4YTguNzA3IDguNzA3IDAgMCAxIC4yOC0xLjM1NWMuMTI4LS40NDQuMjg2LS44NzIuNDczLTEuMjc3YTcuMDQgNy4wNCAwIDAgMSAxLjQ1Ni0yLjEgNS45MjUgNS45MjUgMCAwIDEgLjk1My0uNzYzYy4xNjktLjExMS4zNDMtLjIxMy41MjQtLjMwNi4wODktLjA1LjE4Mi0uMDkxLjI3My0uMTM1LjA0Ny0uMDIuMDkzLS4wNDIuMTM4LS4wNjJhNy4xNzcgNy4xNzcgMCAwIDEgLjcxNC0uMjY3bC4xNDUtLjA0NWMuMDQ5LS4wMTUuMDk4LS4wMjYuMTQ4LS4wNDEuMDk4LS4wMjkuMTk3LS4wNTIuMjk2LS4wNzYuMDQ5LS4wMTMuMS0uMDIuMTUtLjAzM2wuMTUtLjAzMi4xNTEtLjAyOC4wNzYtLjAxMy4wNzUtLjAxLjE1My0uMDI0Yy4wNTctLjAxLjExNC0uMDEzLjE3MS0uMDIzbC4xNjktLjAyMWMuMDM2LS4wMDMuMDczLS4wMDguMTA2LS4wMWwuMDczLS4wMDguMDM2LS4wMDMuMDQyLS4wMDJjLjA1Ny0uMDAzLjExNC0uMDA4LjE3MS0uMDFsLjA4Ni0uMDA2aC4wMjNsLjAzNy0uMDAzLjE0NS0uMDA3YTcuOTk5IDcuOTk5IDAgMCAxIDEuNzA4LjEyNSA3LjkxNyA3LjkxNyAwIDAgMSAyLjA0OC42OCA4LjI1MyA4LjI1MyAwIDAgMSAxLjY3MiAxLjA5bC4wOS4wNzcuMDg5LjA3OGMuMDYuMDUyLjExNC4xMDcuMTcxLjE1OS4wNTcuMDUyLjExMi4xMDYuMTY2LjE2LjA1Mi4wNTUuMTA3LjEwNy4xNTkuMTY0YTguNjcxIDguNjcxIDAgMCAxIDEuNDEgMS45NzhjLjAxMi4wMjYuMDI4LjA1Mi4wNC4wNzhsLjA0LjA3OC4wNzUuMTU2Yy4wMjMuMDUxLjA1LjEuMDcuMTUzbC4wNjUuMTVhOC44NDggOC44NDggMCAwIDEgLjQ1IDEuMzQuMTkuMTkgMCAwIDAgLjIwMS4xNDIuMTg2LjE4NiAwIDAgMCAuMTcyLS4xODRjLjAxLS4yNDYuMDAyLS41MzItLjAyNC0uODU2eiIvPjwvc3ZnPg==" x="20" y="0" width="14" height="14"/>
+    <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAiCAYAAADVhWD8AAADZklEQVRYhcWXTW8bVRSGn3NdoaxgLEQlJFrGe2p5AyF8VMmSSkV4V2XTyS+wvebDYxDruL+AdBOyMxSpsKsXBGgkJCvqgp1vo0qVqCq7u0ho7mExiTuuPfadtIVXGsm+c+acd2bOPHNGKKDV/ScNRZtACFiMiQ/WXr2Zjan+8lUDpzEQABYkPrzy9c2ZZHMkvkbe/XUUich3MwlEW3c/KHcBqj9/0UYlnlMm8jFkfM2ISHveumpmXSWaf7Rr+tQ452uG9NbMU1C7Mwo4vhE4TXJipOZTwPvKAOO8HSsrBAXy5Mr/Nql2XkTBRfI2c/ejchenHcD+72YADj4uxwcfBhVjdGr7Y61sX4SZmQZ+//dR6HPg8xoIe3EQQDCox5M8EzOr+08aTjV2zq8Z39sfW4zsHKy9VriXqrfb25BEDoLq7S/tKRgNpEBTtCtS6KkIcRqv/jbyYsi0EdeESa0QdOednz5fT3tGpFEkYVZT0FuiWi8O8gAoJdM2AAJeUMpRCj0fnfsnt45AaABU6T+HGTvYKI8Hn8SWXDDqYFkSBWsAnNMbZ7ZiTJz5l9PMprvUTOI6BuDPy+UfVHVLlaVnkJEV1VZ2hDi88k1XlS2egtGCay16Yyvad4nbuHf1236B2i9fU/PMMPgsIFiZasaK3bPzYp5dz2rUC4NjAq+mfrM+mOSZmLl/cbOhSAw6lUSNq5wWvn9xs61I8zRGIH77aHeqTx7fqm4rRODHLAVrhJ3Xrx52BGB4YTMSYWaKy5pJjRDPJtNW5ej7bsZIIQhOZIhSznhA7+RsZyQ8hd6ZjQA4jU7e2roQesMwClgw6QE87NXy9ntJkBR6qPZzYsZpvxwvvf8njZg7DS6TovaEwPOnOIVCMHS50PMwk2gKvcqDvb6q1jNXyKaNuRsXSXj+08OuS3QLf3iOQfuauI036vf6Xt9Nw/BaKM4M8/aHR7ve31+LVORTZake9Wrr08mPbbn+l/U9vtAMvEgPe7VQSu5OdktKrwwf37q0/Z+byZMizUc/VmOf2JduBsAI173i/NKtnJkfAJoPzCl5manYnTHkPa5qYRn0cqFa3AwsAKMmrdPfedBzSak1b/1ZFeLD8K1r6yLSRiRE1apqp/Jgr5+N+bt3KTIlrotKqKIDl5Q65+sDLwj+C522aNEorPCIAAAAAElFTkSuQmCC" x="40" y="0" width="14" height="14"/>
+    <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAUVBMVEVHcEwcHS0cHi0cHi0cHi0cHS0cHS0cHi0cHi0cHi0cHi0cHi3///8TFSYAABYLDiJYWWJOT1l0dXzc3N7DxMctLjynqKyYmJ729vfs7O2EhIsLPrQrAAAAC3RSTlMAGpWEsgvS+WnmQvRhZKgAAAIpSURBVFiFpVfbloMgDFSxKiCgtda2//+hu1xUahJll2lfPCczkEy4FQWBUrC64a2ULW9qJkoqDoeouDyAVyKVfesAO2h0txQ6a3G6RcsuJboTupPoTullc063aE7q2V3TLchJVGl8KSucX6fypawz+ajCn/iIQnL+Kw51gPVXNHzAlxclHGEYx8H+EMw+Iu4H0D9q6GmMfg7NaQLjtcCexA32f5JAu64sBiuQJCAZOYFEgTAFbAmlCYQqYPtPogC3fIHwk2y0EP9p4hgVkQEF5f4RONrFITQJJV4CqZcoUamMNoSAwLrICryeev+YP8tdajSQ4RuJufevdUwlH672C6pQw4Xoxpz6/hMU1BTce2IKDd1Gk4/XT8z/DbzATiLtJj24eP3eBLAptAWWgXTxDxuv5r0DJywHTEAvnjCrTWxXBAJICuYdTVlPmwDmQ4sU8ddDj5eKv/oXlixHbNzHdE5uNgxYNzawkaKtwFdN363iYyQaCbSy9zAM6spotJyNxpcXA4sp9g2v+xcEWM6rh7GTJyjBhhJ1HtX/ETjY0nbXvHXUPhBQgU016pvdSRriuK2b43b+Ps2Bg4Ml9jB2kkAHj7Yj/9TJ9XTde+nbw0snGTjezRsK0E5ux/tWhYOHwcmLCsRXnKOHHgvhZHTF2fr5joHy4evSHZJQBgHBP1y5cy+a+Vfd/Mt2/nU//8GR/+TJf3QV2c++Iv/hWWQ/fR3yHt8eqc//H4M9kg/UFLphAAAAAElFTkSuQmCC" x="60" y="0" width="14" height="14"/>
+    <g transform="translate(80, 4)">
+      <circle cx="2" cy="4" r="1.3" fill="#999"/>
+      <circle cx="7" cy="4" r="1.3" fill="#999"/>
+      <circle cx="12" cy="4" r="1.3" fill="#999"/>
+    </g>
+  </g>
+</svg>
