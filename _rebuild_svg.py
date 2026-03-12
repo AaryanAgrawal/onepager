@@ -65,8 +65,8 @@ new_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 195" style
       <text x="522" y="82" font-size="11" fill="#999" text-anchor="middle">escalates</text>
 
       <!-- TOP-LEFT: Field Tech -> Relay top (horizontal right, bend down) -->
-      <path d="M265,19 L324,19 Q332,19 332,27 L332,58" stroke="#33ee69" stroke-width="2.5" fill="none"/>
-      <text x="295" y="14" font-size="10" fill="#999" text-anchor="middle">dispatches</text>
+      <path d="M235,19 L324,19 Q332,19 332,27 L332,58" stroke="#33ee69" stroke-width="2.5" fill="none"/>
+      <text x="280" y="14" font-size="10" fill="#999" text-anchor="middle">dispatches</text>
 
       <!-- TOP-RIGHT: End User -> Relay top (orange, horizontal left, bend down) -->
       <path d="M470,17 L356,17 Q348,17 348,25 L348,58" stroke="#FF6821" stroke-width="2" fill="none" marker-end="url(#rw-arr-o)"/>
@@ -133,11 +133,11 @@ new_svg = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 195" style
       </g>
       <text x="625" y="95" font-size="12" fill="#10100d" text-anchor="middle">Your Engineers</text>
 
-      <!-- Field Tech (top-left — pushed left for label space) -->
+      <!-- Field Tech (top-left — pushed further left for label space) -->
       <g filter="url(#rw-shadow)">
-        <rect x="155" y="4" width="110" height="30" rx="10" fill="#ECFDF5" stroke="#33ee69" stroke-width="1.5"/>
+        <rect x="125" y="4" width="110" height="30" rx="10" fill="#ECFDF5" stroke="#33ee69" stroke-width="1.5"/>
       </g>
-      <text x="210" y="24" font-size="12" fill="#10100d" text-anchor="middle">Field Tech</text>
+      <text x="180" y="24" font-size="12" fill="#10100d" text-anchor="middle">Field Tech</text>
 
       <!-- Remote Support (bottom-left — pushed left for label space) -->
       <g filter="url(#rw-shadow)">
