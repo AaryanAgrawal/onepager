@@ -68,17 +68,17 @@ Your robots need people behind them — remote operators watching the fleet, and
 
 **Lower support overhead**
 `[icon: money-wavy, farhand-green]`
-A single W-2 field technician costs up to $160K/yr in salary, benefits, travel, tools, and management overhead
+A W-2 technician costs up to $160K/yr in salary, benefits, travel, tools, and management
 Badge : On-demand support cuts costs by up to 65%.
 
 **Consistent service quality**
 `[icon: seal-check, farhand-green]`
-Our AI agent is tailored to be your best engineer, present alongside any technician, on call or anywhere in the country.
+Our AI agent is tailored to be your best engineer, present alongside technicians on call or in the field
 Badge : AI-guided expertise on every job.
 
 **Faster fleet expansion**
 `[icon: chart-line-up, farhand-green]`
-Support capacity shouldn't bottleneck your robot sales. Expand into new regions without months of recruiting and training.
+Expand into new regions without months of recruiting and training.
 Badge : 10x your deployed robots without adding headcount.
 
 ### CTA
