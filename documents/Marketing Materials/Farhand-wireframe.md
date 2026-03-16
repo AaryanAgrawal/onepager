@@ -52,12 +52,12 @@ Your robots need people behind them — remote operators watching the fleet, and
 **Remote Support** `[icon: headset, farhand-green]`:
 - 24/7 fleet monitoring & teleoperation
 - L1/L2 remote troubleshooting
-- Escalation to field when remote can't resolve
+- 40+ countries served across 5 continents
 
 **Field Service** `[icon: wrench, farhand-green]`:
 - On-site installation & user training
 - Break/fix repair, preventative maintenance
-- Vetted and certified on your robot
+- 1,700+ robot technicians nationwide
 
 **AI Platform** (full-width bar spanning both columns) `[icon: sparkle, farhand-green]`:
 - Understands your docs to create SOPs and answer questions
@@ -68,15 +68,18 @@ Your robots need people behind them — remote operators watching the fleet, and
 
 **Lower support overhead**
 `[icon: money-wavy, farhand-green]`
-A single W-2 field technician costs up to $160K/yr in salary, benefits, travel, tools, and management overhead. On-demand support cuts costs by 30–65%.
+A single W-2 field technician costs up to $160K/yr in salary, benefits, travel, tools, and management overhead
+Badge : On-demand support cuts costs by up to 65%.
 
 **Consistent service quality**
 `[icon: seal-check, farhand-green]`
 Our AI agent is tailored to be your best engineer, present alongside any technician, on call or anywhere in the country.
+Badge : AI-guided expertise on every job.
 
 **Faster fleet expansion**
 `[icon: chart-line-up, farhand-green]`
-Support capacity shouldn't bottleneck your robot sales. Expand into new regions without months of recruiting and training. More robots deployed, revenue captured faster.
+Support capacity shouldn't bottleneck your robot sales. Expand into new regions without months of recruiting and training.
+Badge : 10x your deployed robots without adding headcount.
 
 ### CTA
 *Let's talk*
