@@ -4,7 +4,14 @@
     {
       "name": "Client Comms",
       "type": "folder",
-      "children": []
+      "children": [
+        {
+          "name": "Boschert USA",
+          "type": "document",
+          "path": "Client Comms/Boschert USA.html",
+          "pageCount": 2
+        }
+      ]
     },
     {
       "name": "Marketing Materials",
