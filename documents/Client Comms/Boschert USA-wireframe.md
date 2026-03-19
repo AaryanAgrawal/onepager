@@ -37,8 +37,8 @@
 
 - **Farhand logo**: `{{LOGO}}` — height 36px
 - **×** separator (light gray, font-weight 300)
-- **Boschert USA logo**: `{{ASSET:assets/boschert_logo.jpg}}` — height 36px, `object-fit: contain`
-- Both logos must render at matching visual height. Verify with Playwright after render.
+- **Boschert USA logo**: `{{ASSET:assets/boschert_logo.jpg}}` — height 44px, `object-fit: contain`
+- Sizes verified via Puppeteer — FH 36px / BO 44px gives matched visual typography height.
 
 ### Title Block
 
