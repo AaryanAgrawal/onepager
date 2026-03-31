@@ -41,10 +41,10 @@ export async function POST(request: NextRequest) {
     });
 
     const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "networkidle0" });
-    await page.evaluateHandle("document.fonts.ready");
-    // Extra wait for Google Fonts to fully render after load
-    await new Promise((r) => setTimeout(r, 500));
+    await page.setContent(html, { waitUntil: "domcontentloaded", timeout: 60000 });
+    await page.evaluateHandle("document.fonts.ready").catch(() => {});
+    // Extra wait for fonts to render
+    await new Promise((r) => setTimeout(r, 2000));
     await page.addStyleTag({
       content: `@media print {
         body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; margin: 0; padding: 0; background: white; }
